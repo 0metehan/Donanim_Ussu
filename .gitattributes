@@ -1,2 +1,16 @@
+# Metin dosyalari repoda ve calisma kopyasinda LF olarak tutulur
+* text=auto eol=lf
+
 /mvnw text eol=lf
 *.cmd text eol=crlf
+*.bat text eol=crlf
+
+# Binary dosyalar
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
