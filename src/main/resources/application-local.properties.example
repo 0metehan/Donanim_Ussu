@@ -1,0 +1,6 @@
+# Bu dosyayi ayni klasore "application-local.properties" adiyla kopyalayin
+# ve kendi MySQL bilgilerinizi yazin. O dosya .gitignore'da, GitHub'a gitmez.
+
+spring.datasource.url=jdbc:mysql://localhost:3306/donanim_ussu?createDatabaseIfNotExist=true&serverTimezone=Europe/Istanbul
+spring.datasource.username=root
+spring.datasource.password=
