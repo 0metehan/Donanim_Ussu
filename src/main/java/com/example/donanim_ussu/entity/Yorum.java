@@ -30,12 +30,10 @@ public class Yorum {
     @Column(name = "icerik", nullable = false, columnDefinition = "TEXT")
     private String icerik;
 
-    // Yorumu yazan kullanici
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "kullanici_id", nullable = false)
     private Kullanici kullanici;
 
-    // Yorumun yazildigi konu
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "konu_id", nullable = false)
     private Konu konu;

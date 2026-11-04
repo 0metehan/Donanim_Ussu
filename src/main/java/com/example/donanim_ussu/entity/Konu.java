@@ -31,11 +31,9 @@ public class Konu {
     @Column(name = "baslik", nullable = false, length = 200)
     private String baslik;
 
-    // Konunun ilk mesaji
     @Column(name = "icerik", nullable = false, columnDefinition = "TEXT")
     private String icerik;
 
-    // Konuyu acan kullanici
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "kullanici_id", nullable = false)
     private Kullanici kullanici;

@@ -32,7 +32,6 @@ public class Kullanici {
     @Column(name = "eposta", nullable = false, unique = true, length = 100)
     private String eposta;
 
-    // Sifre duz metin degil, hash'lenmis olarak saklanir
     @Column(name = "sifre_hash", nullable = false)
     private String sifreHash;
 
