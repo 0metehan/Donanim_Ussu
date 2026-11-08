@@ -1,7 +1,14 @@
 package com.example.donanim_ussu.service;
 
+import com.example.donanim_ussu.dto.YorumResponse;
+import com.example.donanim_ussu.entity.Yorum;
 import com.example.donanim_ussu.repository.YorumRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class YorumService {
@@ -10,5 +17,13 @@ public class YorumService {
 
     public YorumService(YorumRepository repository) {
         this.repository = repository;
+    }
+
+    public List<Yorum> tumunuGetir() {
+        return repository.findAll();
+    }
+
+    public Optional <Yorum> getir(Long id) {
+        return repository.findById(id);
     }
 }
