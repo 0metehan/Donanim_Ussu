@@ -3,12 +3,11 @@ package com.example.donanim_ussu.controller;
 import com.example.donanim_ussu.dto.KategoriResponse;
 import com.example.donanim_ussu.entity.Kategori;
 import com.example.donanim_ussu.service.KategoriService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/Kategori")
@@ -26,7 +25,13 @@ public class KategoriController {
     }
 
     @GetMapping("/{id}")
-    public KategoriResponse getir(@PathVariable Long id) {
+    public Optional<Kategori> getir(@PathVariable Long id) {
         return service.getir(id);
+    }
+
+    @DeleteMapping("/KategoriSil/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void kategoriSil(@PathVariable Long id) {
+        service.kategoriSil(id);
     }
 }
