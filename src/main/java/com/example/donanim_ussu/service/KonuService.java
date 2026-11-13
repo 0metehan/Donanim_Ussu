@@ -1,6 +1,5 @@
 package com.example.donanim_ussu.service;
 
-import com.example.donanim_ussu.dto.KonuResponse;
 import com.example.donanim_ussu.entity.Konu;
 import com.example.donanim_ussu.repository.KonuRepository;
 import org.springframework.http.HttpStatus;
@@ -28,6 +27,23 @@ public class KonuService {
                 return repository.findById(id);
     }
 
+    public Konu ekle(Konu konu) {
+        konu.setId(null);
+        return repository.save(konu);
+    }
+
+    public void guncelle(Long id, Konu yeni) {
+        Konu konu = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Konu bulunamadi"));
+        konu.setBaslik(yeni.getBaslik());
+        konu.setIcerik(yeni.getIcerik());
+        konu.setKategori(yeni.getKategori());
+        repository.save(konu);
+    }
+
+    public void sil(Long id) {
+        repository.deleteById(id);
+    }
 
 }
 

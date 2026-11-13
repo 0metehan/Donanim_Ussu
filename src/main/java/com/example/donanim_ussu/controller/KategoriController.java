@@ -1,6 +1,5 @@
 package com.example.donanim_ussu.controller;
 
-import com.example.donanim_ussu.dto.KategoriResponse;
 import com.example.donanim_ussu.entity.Kategori;
 import com.example.donanim_ussu.service.KategoriService;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,19 @@ public class KategoriController {
         return service.getir(id);
     }
 
-    @DeleteMapping("/KategoriSil/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void kategoriSil(@PathVariable Long id) {
         service.kategoriSil(id);
+    }
+
+    @PostMapping
+    public Kategori ekle(@RequestBody Kategori kategori) {
+        return service.ekle(kategori);
+    }
+
+    @PutMapping("/{id}")
+    public Kategori guncelle(@PathVariable Long id, @RequestBody Kategori kategori) {
+        return service.guncelle(id, kategori);
     }
 }

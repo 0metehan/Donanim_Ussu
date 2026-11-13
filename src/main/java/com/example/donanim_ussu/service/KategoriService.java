@@ -1,6 +1,5 @@
 package com.example.donanim_ussu.service;
 
-import com.example.donanim_ussu.dto.KategoriResponse;
 import com.example.donanim_ussu.entity.Kategori;
 import com.example.donanim_ussu.repository.KategoriRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,5 +33,18 @@ public class KategoriService {
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Bu kategoride konular var");
         }
+    }
+
+    public Kategori ekle(Kategori kategori) {
+        kategori.setId(null);
+        return repository.save(kategori);
+    }
+
+    public Kategori guncelle(Long id, Kategori yeni) {
+        Kategori kategori = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kategori bulunamadi"));
+        kategori.setAd(yeni.getAd());
+        kategori.setAciklama(yeni.getAciklama());
+        return repository.save(kategori);
     }
 }

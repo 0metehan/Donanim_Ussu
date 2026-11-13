@@ -1,5 +1,6 @@
 package com.example.donanim_ussu.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,6 +33,7 @@ public class Kullanici {
     @Column(name = "eposta", nullable = false, unique = true, length = 100)
     private String eposta;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "sifre_hash", nullable = false)
     private String sifreHash;
 

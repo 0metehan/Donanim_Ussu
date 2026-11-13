@@ -1,6 +1,5 @@
 package com.example.donanim_ussu.service;
 
-import com.example.donanim_ussu.dto.YorumResponse;
 import com.example.donanim_ussu.entity.Yorum;
 import com.example.donanim_ussu.repository.YorumRepository;
 import org.springframework.http.HttpStatus;
@@ -25,5 +24,21 @@ public class YorumService {
 
     public Optional <Yorum> getir(Long id) {
         return repository.findById(id);
+    }
+
+    public Yorum ekle(Yorum yorum) {
+        yorum.setId(null);
+        return repository.save(yorum);
+    }
+
+    public void guncelle(Long id, Yorum yeni) {
+        Yorum yorum = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Yorum bulunamadi"));
+        yorum.setIcerik(yeni.getIcerik());
+        repository.save(yorum);
+    }
+
+    public void sil(Long id) {
+        repository.deleteById(id);
     }
 }

@@ -10,10 +10,10 @@ import java.util.Optional;
 public interface YorumRepository extends JpaRepository<Yorum, Long> {
 
     @Override
-    @EntityGraph(attributePaths = {"kullanici", "konu"})
+    @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori"})
     List<Yorum> findAll();
 
     @Override
-    @EntityGraph(attributePaths = {"kullanici", "konu"})
+    @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori"})
     Optional<Yorum> findById(Long id);
 }

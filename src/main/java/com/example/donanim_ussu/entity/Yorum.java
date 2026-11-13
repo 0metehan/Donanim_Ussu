@@ -13,6 +13,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +38,7 @@ public class Yorum {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "konu_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Konu konu;
 
     @Column(name = "olusturma_tarihi", nullable = false, updatable = false)
