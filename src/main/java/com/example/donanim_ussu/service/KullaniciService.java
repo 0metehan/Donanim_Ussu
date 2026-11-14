@@ -1,6 +1,7 @@
 package com.example.donanim_ussu.service;
 
 import com.example.donanim_ussu.entity.Kullanici;
+import com.example.donanim_ussu.guvenlik.JwtUtil;
 import com.example.donanim_ussu.repository.KullaniciRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,21 @@ import java.util.Optional;
 public class KullaniciService {
 
     private final KullaniciRepository repository;
+    private final JwtUtil jwtUtil;
 
-    public KullaniciService(KullaniciRepository repository) {
+    public KullaniciService(KullaniciRepository repository, JwtUtil jwtUtil) {
         this.repository = repository;
+        this.jwtUtil = jwtUtil;
+    }
+
+    // Kullanici adi ve sifre dogruysa çerez dondurur
+    public String giris(String kullaniciAdi, String sifre) {
+        Kullanici kullanici = repository.findByKullaniciAdi(kullaniciAdi)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici adi veya sifre hatali"));
+        if (!kullanici.getSifreHash().equals(hashle(sifre))) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici adi veya sifre hatali");
+        }
+        return jwtUtil.tokenUret(kullanici.getKullaniciAdi());
     }
 
     public List<Kullanici> tumunuGetir() {

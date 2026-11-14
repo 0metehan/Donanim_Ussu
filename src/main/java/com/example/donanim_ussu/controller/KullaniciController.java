@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +33,12 @@ public class KullaniciController {
     @GetMapping("/{id}")
     public Optional<Kullanici> getir(@PathVariable Long id) {
         return service.getir(id);
+    }
+
+    @PostMapping("/giris")
+    public Map<String, String> giris(@RequestBody Map<String, String> istek) {
+        String token = service.giris(istek.get("kullaniciAdi"), istek.get("sifre"));
+        return Map.of("token", token);
     }
 
     @PostMapping
