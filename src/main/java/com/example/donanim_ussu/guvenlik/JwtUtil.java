@@ -29,4 +29,14 @@ public class JwtUtil {
                 .signWith(anahtar)
                 .compact();
     }
+
+    // Token gecerliyse icindeki kullanici adini dondurur, gecersiz/suresi dolmussa JwtException firlatir
+    public String kullaniciAdiAl(String token) {
+        return Jwts.parser()
+                .verifyWith(anahtar)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
 }

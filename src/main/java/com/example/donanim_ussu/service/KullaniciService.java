@@ -2,6 +2,7 @@ package com.example.donanim_ussu.service;
 
 import com.example.donanim_ussu.entity.Kullanici;
 import com.example.donanim_ussu.guvenlik.JwtUtil;
+import com.example.donanim_ussu.guvenlik.YetkiKontrol;
 import com.example.donanim_ussu.repository.KullaniciRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ public class KullaniciService {
 
     private final KullaniciRepository repository;
     private final JwtUtil jwtUtil;
+    private final YetkiKontrol yetkiKontrol;
 
-    public KullaniciService(KullaniciRepository repository, JwtUtil jwtUtil) {
+    public KullaniciService(KullaniciRepository repository, JwtUtil jwtUtil, YetkiKontrol yetkiKontrol) {
         this.repository = repository;
         this.jwtUtil = jwtUtil;
+        this.yetkiKontrol = yetkiKontrol;
     }
 
     // Kullanici adi ve sifre dogruysa çerez dondurur
@@ -51,6 +54,8 @@ public class KullaniciService {
     public Kullanici guncelle(Long id, Kullanici yeni) {
         Kullanici kullanici = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kullanici bulunamadi"));
+        // Kullanici sadece kendi hesabini guncelleyebilir (moderator/admin herkesi)
+        yetkiKontrol.sahibiVeyaYetkili(kullanici);
         kullanici.setKullaniciAdi(yeni.getKullaniciAdi());
         kullanici.setEposta(yeni.getEposta());
         kullanici.setSifreHash(hashle(yeni.getSifreHash()));
@@ -59,7 +64,11 @@ public class KullaniciService {
     }
 
     public void sil(Long id) {
-        repository.deleteById(id);
+        Kullanici kullanici = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kullanici bulunamadi"));
+        // Kullanici sadece kendi hesabini silebilir (moderator/admin herkesi)
+        yetkiKontrol.sahibiVeyaYetkili(kullanici);
+        repository.delete(kullanici);
     }
     private String hashle(String sifre) {
         try {

@@ -1,6 +1,7 @@
 package com.example.donanim_ussu.service;
 
 import com.example.donanim_ussu.entity.Konu;
+import com.example.donanim_ussu.guvenlik.YetkiKontrol;
 import com.example.donanim_ussu.repository.KonuRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class KonuService {
 
     private final KonuRepository repository;
+    private final YetkiKontrol yetkiKontrol;
 
-    public KonuService(KonuRepository repository) {
+    public KonuService(KonuRepository repository, YetkiKontrol yetkiKontrol) {
         this.repository = repository;
+        this.yetkiKontrol = yetkiKontrol;
     }
 
     public List<Konu> tumunuGetir() {
@@ -29,12 +32,14 @@ public class KonuService {
 
     public Konu ekle(Konu konu) {
         konu.setId(null);
+        // Konunun sahibi her zaman giris yapan kullanicidir
+        konu.setKullanici(yetkiKontrol.girisYapan());
         return repository.save(konu);
     }
 
     public void guncelle(Long id, Konu yeni) {
-        Konu konu = repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Konu bulunamadi"));
+        Konu konu = bul(id);
+        yetkiKontrol.sahibiVeyaYetkili(konu.getKullanici());
         konu.setBaslik(yeni.getBaslik());
         konu.setIcerik(yeni.getIcerik());
         konu.setKategori(yeni.getKategori());
@@ -42,8 +47,14 @@ public class KonuService {
     }
 
     public void sil(Long id) {
-        repository.deleteById(id);
+        Konu konu = bul(id);
+        yetkiKontrol.sahibiVeyaYetkili(konu.getKullanici());
+        repository.delete(konu);
+    }
+
+    private Konu bul(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Konu bulunamadi"));
     }
 
 }
-
