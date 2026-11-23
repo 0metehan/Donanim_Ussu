@@ -1,6 +1,7 @@
 package com.example.donanim_ussu.service;
 
 import com.example.donanim_ussu.entity.Kategori;
+import com.example.donanim_ussu.guvenlik.YetkiKontrol;
 import com.example.donanim_ussu.repository.KategoriRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class KategoriService {
 
     private final KategoriRepository repository;
+    private final YetkiKontrol yetkiKontrol;
 
-    public KategoriService(KategoriRepository repository) {
+    public KategoriService(KategoriRepository repository, YetkiKontrol yetkiKontrol) {
         this.repository = repository;
+        this.yetkiKontrol = yetkiKontrol;
     }
 
     public List<Kategori> tumunuGetir() {
@@ -28,6 +31,7 @@ public class KategoriService {
     }
 
     public void kategoriSil(Long id) {
+        yetkiKontrol.adminMi();
         try {
             repository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
@@ -36,11 +40,13 @@ public class KategoriService {
     }
 
     public Kategori ekle(Kategori kategori) {
+        yetkiKontrol.adminMi();
         kategori.setId(null);
         return repository.save(kategori);
     }
 
     public Kategori guncelle(Long id, Kategori yeni) {
+        yetkiKontrol.adminMi();
         Kategori kategori = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kategori bulunamadi"));
         kategori.setAd(yeni.getAd());

@@ -35,4 +35,10 @@ public class YetkiKontrol {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bu islem icin yetkiniz yok");
         }
     }
+
+    public void adminMi() {
+        if (girisYapan().getRol() != Rol.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bu islemi sadece admin yapabilir");
+        }
+    }
 }
