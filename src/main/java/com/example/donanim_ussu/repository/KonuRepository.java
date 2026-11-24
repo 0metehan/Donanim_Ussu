@@ -16,4 +16,7 @@ public interface KonuRepository extends JpaRepository<Konu, Long> {
     @Override
     @EntityGraph(attributePaths = {"kullanici", "kategori"})
     Optional<Konu> findById(Long id);
+
+    @EntityGraph(attributePaths = {"kullanici", "kategori"})
+    List<Konu> findByKategoriIdOrderByOlusturmaTarihiDesc(Long kategoriId);
 }

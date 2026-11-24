@@ -30,6 +30,11 @@ public class KullaniciController {
         return service.tumunuGetir();
     }
 
+    @GetMapping("/ben")
+    public Kullanici ben() {
+        return service.ben();
+    }
+
     @GetMapping("/{id}")
     public Optional<Kullanici> getir(@PathVariable Long id) {
         return service.getir(id);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class KonuController {
     }
 
     @GetMapping
-    public List<Konu> tumunuGetir() {
-        return service.tumunuGetir();
+    public List<Konu> tumunuGetir(@RequestParam(required = false) Long kategoriId) {
+        return service.tumunuGetir(kategoriId);
     }
 
     @GetMapping("/{id}")

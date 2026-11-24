@@ -21,7 +21,10 @@ public class YorumService {
         this.yetkiKontrol = yetkiKontrol;
     }
 
-    public List<Yorum> tumunuGetir() {
+    public List<Yorum> tumunuGetir(Long konuId) {
+        if (konuId != null) {
+            return repository.findByKonuIdOrderByOlusturmaTarihiAsc(konuId);
+        }
         return repository.findAll();
     }
 

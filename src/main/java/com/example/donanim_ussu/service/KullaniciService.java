@@ -41,6 +41,10 @@ public class KullaniciService {
         return repository.findAll();
     }
 
+    public Kullanici ben() {
+        return yetkiKontrol.girisYapan();
+    }
+
     public Optional<Kullanici> getir(Long id) {
         return repository.findById(id);
     }

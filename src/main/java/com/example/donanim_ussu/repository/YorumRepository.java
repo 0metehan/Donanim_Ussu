@@ -16,4 +16,7 @@ public interface YorumRepository extends JpaRepository<Yorum, Long> {
     @Override
     @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori"})
     Optional<Yorum> findById(Long id);
+
+    @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori"})
+    List<Yorum> findByKonuIdOrderByOlusturmaTarihiAsc(Long konuId);
 }
