@@ -10,8 +10,22 @@
   </ng-template>
 
   <ng-template #end>
-    <input pInputText type="text" placeholder="Ara..." aria-label="Ara" pSize="small" />
-    <p-button icon="pi pi-search" [text]="true" severity="secondary" ariaLabel="Ara" />
+    <input
+      #aramaKutusu
+      pInputText
+      type="text"
+      placeholder="Ara..."
+      aria-label="Ara"
+      pSize="small"
+      (keydown.enter)="ara(aramaKutusu.value)"
+    />
+    <p-button
+      icon="pi pi-search"
+      [text]="true"
+      severity="secondary"
+      ariaLabel="Ara"
+      (onClick)="ara(aramaKutusu.value)"
+    />
     @if (kimlik.kullanici(); as kullanici) {
       <p-button [label]="kullanici.kullaniciAdi" icon="pi pi-user" [text]="true" severity="secondary" />
       <p-button

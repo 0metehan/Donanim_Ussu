@@ -26,8 +26,9 @@ public class KonuController {
     }
 
     @GetMapping
-    public List<Konu> tumunuGetir(@RequestParam(required = false) Long kategoriId) {
-        return service.tumunuGetir(kategoriId);
+    public List<Konu> tumunuGetir(@RequestParam(required = false) Long kategoriId,
+                                  @RequestParam(required = false) String ara) {
+        return service.tumunuGetir(kategoriId, ara);
     }
 
     @GetMapping("/{id}")

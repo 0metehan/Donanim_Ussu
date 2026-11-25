@@ -12,13 +12,14 @@ export class Forum {
     return this.http.get<Kategori[]>('/api/Kategori');
   }
 
-  // Konuları getirir; kategoriId verilirse sadece o kategorinin konuları gelir
-  // -> GET /api/Konu  veya  GET /api/Konu?kategoriId=3
-  konular(kategoriId?: number): Observable<Konu[]> {
-    if (kategoriId) {
-      return this.http.get<Konu[]>('/api/Konu', { params: { kategoriId } });
-    }
-    return this.http.get<Konu[]>('/api/Konu');
+  // Konuları getirir; kategoriId verilirse o kategorinin konuları,
+  // ara verilirse başlığında o kelime geçen konular gelir
+  // -> GET /api/Konu, /api/Konu?kategoriId=3 veya /api/Konu?ara=rtx
+  konular(kategoriId?: number, ara?: string): Observable<Konu[]> {
+    const params: Record<string, string | number> = {};
+    if (kategoriId) params['kategoriId'] = kategoriId;
+    if (ara) params['ara'] = ara;
+    return this.http.get<Konu[]>('/api/Konu', { params });
   }
 
   // Yeni konu açar -> POST /api/Konu

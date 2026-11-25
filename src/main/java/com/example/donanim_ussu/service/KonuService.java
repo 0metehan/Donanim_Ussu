@@ -21,7 +21,10 @@ public class KonuService {
         this.yetkiKontrol = yetkiKontrol;
     }
 
-    public List<Konu> tumunuGetir(Long kategoriId) {
+    public List<Konu> tumunuGetir(Long kategoriId, String ara) {
+        if (ara != null && !ara.isBlank()) {
+            return repository.findByBaslikContainingOrderByOlusturmaTarihiDesc(ara.trim());
+        }
         if (kategoriId != null) {
             return repository.findByKategoriIdOrderByOlusturmaTarihiDesc(kategoriId);
         }

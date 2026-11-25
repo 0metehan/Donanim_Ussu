@@ -25,13 +25,17 @@ export class AnaSayfa {
   // /kategori/:id adresinden gelir; ana sayfada boştur (tüm konular)
   readonly id = input<string>();
 
+  // /?ara=kelime adresinden gelir (üst bardaki arama kutusu)
+  readonly ara = input<string>();
+
   private readonly kategoriler = toSignal(this.forum.kategoriler(), { initialValue: [] });
 
-  // Sekme başlığı: kategori sayfasında kategorinin adı, ana sayfada "Yeni Konular"
+  // Sekme başlığı: aramada "Arama: kelime", kategori sayfasında kategorinin adı, ana sayfada "Yeni Konular"
   protected readonly sekmeBasligi = computed(() => {
     const kategori = this.kategoriler().find((k) => k.id === Number(this.id()));
+    const baslik = this.ara() ? `Arama: ${this.ara()}` : (kategori?.ad ?? 'Yeni Konular');
     // 'tr-TR': "i" harfi "I" değil "İ" olsun diye
-    return (kategori?.ad ?? 'Yeni Konular').toLocaleUpperCase('tr-TR');
+    return baslik.toLocaleUpperCase('tr-TR');
   });
 
   protected readonly konuPenceresiAcik = signal(false);
@@ -40,12 +44,19 @@ export class AnaSayfa {
   protected readonly yukleniyor = signal(false);
   protected readonly hata = signal<string | null>(null);
 
-  // Sağdaki "En Son İçerikler" kutusu: en yeni 5 konu
-  protected readonly sonKonular = computed(() => this.konular().slice(0, 5));
+  // Sağdaki "En Son İçerikler" kutusu: arama ve kategoriden bağımsız, tüm sitenin en yeni 5 konusu
+  protected readonly sonKonular = signal<Konu[]>([]);
 
   constructor() {
-    // id değişince (bir kategoriden diğerine geçince) konular yeniden gelir
+    // id ya da arama değişince konular yeniden gelir
     effect(() => this.konulariGetir());
+    this.sonKonulariGetir();
+  }
+
+  protected sonKonulariGetir(): void {
+    this.forum.konular().subscribe({
+      next: (veri) => this.sonKonular.set(this.yeniden(veri).slice(0, 5)),
+    });
   }
 
   // Giriş yapılmışsa konu penceresini, yapılmamışsa giriş penceresini açar
@@ -60,7 +71,7 @@ export class AnaSayfa {
   protected konulariGetir(): void {
     this.yukleniyor.set(true);
     this.hata.set(null);
-    this.forum.konular(Number(this.id()) || undefined).subscribe({
+    this.forum.konular(Number(this.id()) || undefined, this.ara()).subscribe({
       next: (veri) => {
         this.konular.set(this.yeniden(veri));
         this.yukleniyor.set(false);

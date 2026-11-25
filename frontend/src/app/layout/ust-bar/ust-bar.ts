@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
@@ -15,6 +15,7 @@ import { Kimlik } from '../../services/kimlik';
 export class UstBar {
   private readonly forum = inject(Forum);
   protected readonly kimlik = inject(Kimlik);
+  private readonly router = inject(Router);
 
   protected readonly karanlik = signal(false);
 
@@ -30,6 +31,12 @@ export class UstBar {
           ),
         ),
     });
+  }
+
+  // Ana sayfayı /?ara=kelime adresiyle açar; boşsa normal ana sayfaya döner
+  protected ara(kelime: string): void {
+    const temiz = kelime.trim();
+    this.router.navigate(['/'], { queryParams: temiz ? { ara: temiz } : {} });
   }
 
   protected temaDegistir(): void {
