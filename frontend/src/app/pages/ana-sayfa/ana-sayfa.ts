@@ -1,5 +1,6 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { Divider } from 'primeng/divider';
@@ -21,6 +22,18 @@ export class AnaSayfa {
   private readonly forum = inject(Forum);
   private readonly kimlik = inject(Kimlik);
 
+  // /kategori/:id adresinden gelir; ana sayfada boştur (tüm konular)
+  readonly id = input<string>();
+
+  private readonly kategoriler = toSignal(this.forum.kategoriler(), { initialValue: [] });
+
+  // Sekme başlığı: kategori sayfasında kategorinin adı, ana sayfada "Yeni Konular"
+  protected readonly sekmeBasligi = computed(() => {
+    const kategori = this.kategoriler().find((k) => k.id === Number(this.id()));
+    // 'tr-TR': "i" harfi "I" değil "İ" olsun diye
+    return (kategori?.ad ?? 'Yeni Konular').toLocaleUpperCase('tr-TR');
+  });
+
   protected readonly konuPenceresiAcik = signal(false);
 
   protected readonly konular = signal<Konu[]>([]);
@@ -31,7 +44,8 @@ export class AnaSayfa {
   protected readonly sonKonular = computed(() => this.konular().slice(0, 5));
 
   constructor() {
-    this.konulariGetir();
+    // id değişince (bir kategoriden diğerine geçince) konular yeniden gelir
+    effect(() => this.konulariGetir());
   }
 
   // Giriş yapılmışsa konu penceresini, yapılmamışsa giriş penceresini açar
@@ -46,7 +60,7 @@ export class AnaSayfa {
   protected konulariGetir(): void {
     this.yukleniyor.set(true);
     this.hata.set(null);
-    this.forum.konular().subscribe({
+    this.forum.konular(Number(this.id()) || undefined).subscribe({
       next: (veri) => {
         this.konular.set(this.yeniden(veri));
         this.yukleniyor.set(false);

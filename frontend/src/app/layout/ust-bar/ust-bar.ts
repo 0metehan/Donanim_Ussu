@@ -26,7 +26,7 @@ export class UstBar {
       next: (kategoriler) =>
         this.menu.set(
           this.menuOlustur(
-            kategoriler.map((k) => ({ label: k.ad, icon: 'pi pi-folder' })),
+            kategoriler.map((k) => ({ label: k.ad, icon: 'pi pi-folder', routerLink: ['/kategori', k.id] })),
           ),
         ),
     });

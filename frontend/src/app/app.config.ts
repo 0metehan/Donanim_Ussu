@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './services/token-interceptor';
 import { providePrimeNG } from 'primeng/config';
@@ -9,7 +9,8 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    // withComponentInputBinding: adresteki :id gibi değerler bileşene input olarak gelir
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([tokenInterceptor])),
     providePrimeNG({
       theme: {

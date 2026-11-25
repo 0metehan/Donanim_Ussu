@@ -7,5 +7,11 @@ export const routes: Routes = [
     // Sayfa ayrı bir dosya olarak, ihtiyaç olunca yüklenir (lazy loading)
     loadComponent: () => import('./pages/ana-sayfa/ana-sayfa').then((m) => m.AnaSayfa),
   },
+  {
+    // Aynı ana sayfa, sadece o kategorinin konularıyla açılır
+    path: 'kategori/:id',
+    title: 'Donanım Üssü',
+    loadComponent: () => import('./pages/ana-sayfa/ana-sayfa').then((m) => m.AnaSayfa),
+  },
   { path: '**', redirectTo: '' },
 ];
