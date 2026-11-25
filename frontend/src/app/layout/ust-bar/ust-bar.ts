@@ -5,6 +5,7 @@ import { Button } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
 import { InputText } from 'primeng/inputtext';
 import { Forum } from '../../services/forum';
+import { Kimlik } from '../../services/kimlik';
 
 @Component({
   imports: [RouterLink, Button, Menubar, InputText],
@@ -13,6 +14,7 @@ import { Forum } from '../../services/forum';
 })
 export class UstBar {
   private readonly forum = inject(Forum);
+  protected readonly kimlik = inject(Kimlik);
 
   protected readonly karanlik = signal(false);
 

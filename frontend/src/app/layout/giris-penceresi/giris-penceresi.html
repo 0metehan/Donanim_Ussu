@@ -1,0 +1,76 @@
+<p-dialog
+  header="Giriş"
+  [(visible)]="kimlik.girisPenceresiAcik"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '46rem' }"
+  [breakpoints]="{ '768px': '95vw' }"
+  (onHide)="pencereKapandi()"
+>
+  <form class="form-izgara" (ngSubmit)="girisYap()">
+    <label class="form-etiket" for="kullaniciAdi">Kullanıcı adınız:</label>
+    <input
+      pInputText
+      id="kullaniciAdi"
+      name="kullaniciAdi"
+      autocomplete="username"
+      [(ngModel)]="kullaniciAdi"
+      [fluid]="true"
+    />
+
+    <label class="form-etiket" for="sifre">Parola:</label>
+    <p-inputgroup>
+      <input
+        pInputText
+        id="sifre"
+        name="sifre"
+        autocomplete="current-password"
+        [type]="sifreGoster() ? 'text' : 'password'"
+        [(ngModel)]="sifre"
+      />
+      <p-button
+        [label]="sifreGoster() ? 'Gizle' : 'Görüntüle'"
+        [icon]="sifreGoster() ? 'pi pi-eye-slash' : 'pi pi-eye'"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="sifreGoster.set(!sifreGoster())"
+      />
+    </p-inputgroup>
+
+    <span></span>
+    <div>
+      <p-checkbox inputId="beniHatirla" name="beniHatirla" [binary]="true" [(ngModel)]="beniHatirla" />
+      <label for="beniHatirla"> Beni hatırla</label>
+    </div>
+
+    @if (hata()) {
+      <span></span>
+      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
+    }
+
+    <span></span>
+    <div>
+      <p-button
+        type="submit"
+        label="Giriş"
+        icon="pi pi-lock"
+        severity="success"
+        [loading]="gonderiliyor()"
+      />
+    </div>
+  </form>
+
+  <p-divider />
+
+  <div class="form-alt">
+    Hesabınız yok mu?
+    <p-button
+      label="Kayıt ol"
+      severity="secondary"
+      size="small"
+      (onClick)="kimlik.kayitPenceresiniAc()"
+    />
+  </div>
+</p-dialog>

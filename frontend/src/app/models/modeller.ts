@@ -1,3 +1,5 @@
+export type Rol = 'KULLANICI' | 'MODERATOR' | 'ADMIN';
+
 export interface Kategori {
   id: number;
   ad: string;
@@ -7,6 +9,8 @@ export interface Kategori {
 export interface Kullanici {
   id: number;
   kullaniciAdi: string;
+  eposta?: string;
+  rol?: Rol;
 }
 
 export interface Konu {

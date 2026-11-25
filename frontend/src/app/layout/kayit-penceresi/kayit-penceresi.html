@@ -1,0 +1,106 @@
+<p-dialog
+  header="Kayıt ol"
+  [(visible)]="kimlik.kayitPenceresiAcik"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '46rem' }"
+  [breakpoints]="{ '768px': '95vw' }"
+  (onHide)="pencereKapandi()"
+>
+  <form class="form-izgara" (ngSubmit)="kayitOl()">
+    <span class="form-etiket" id="kayitRolEtiketi">Hesap türü:</span>
+    <p-selectbutton
+      name="rol"
+      [options]="roller"
+      optionLabel="ad"
+      optionValue="deger"
+      [allowEmpty]="false"
+      [(ngModel)]="rol"
+      ariaLabelledBy="kayitRolEtiketi"
+    />
+
+    <label class="form-etiket" for="kayitKullaniciAdi">Kullanıcı adı:</label>
+    <input
+      pInputText
+      id="kayitKullaniciAdi"
+      name="kullaniciAdi"
+      autocomplete="username"
+      maxlength="50"
+      [(ngModel)]="kullaniciAdi"
+      [fluid]="true"
+    />
+
+    <label class="form-etiket" for="kayitEposta">E-posta adresi:</label>
+    <input
+      pInputText
+      id="kayitEposta"
+      name="eposta"
+      type="email"
+      autocomplete="email"
+      maxlength="100"
+      [(ngModel)]="eposta"
+      [fluid]="true"
+    />
+
+    <label class="form-etiket" for="kayitSifre">Parola:</label>
+    <p-inputgroup>
+      <input
+        pInputText
+        id="kayitSifre"
+        name="sifre"
+        autocomplete="new-password"
+        [type]="sifreGoster() ? 'text' : 'password'"
+        [placeholder]="'En az ' + enAzParola + ' karakter'"
+        [(ngModel)]="sifre"
+      />
+      <p-button
+        [label]="sifreGoster() ? 'Gizle' : 'Görüntüle'"
+        [icon]="sifreGoster() ? 'pi pi-eye-slash' : 'pi pi-eye'"
+        severity="secondary"
+        [outlined]="true"
+        (onClick)="sifreGoster.set(!sifreGoster())"
+      />
+    </p-inputgroup>
+
+    <label class="form-etiket" for="kayitSifreTekrar">Parola (tekrar):</label>
+    <input
+      pInputText
+      id="kayitSifreTekrar"
+      name="sifreTekrar"
+      autocomplete="new-password"
+      [type]="sifreGoster() ? 'text' : 'password'"
+      [(ngModel)]="sifreTekrar"
+      [fluid]="true"
+    />
+
+    @if (hata()) {
+      <span></span>
+      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
+    }
+
+    <span></span>
+    <div>
+      <p-button
+        type="submit"
+        label="Kayıt ol"
+        icon="pi pi-user-plus"
+        severity="success"
+        [loading]="gonderiliyor()"
+      />
+    </div>
+  </form>
+
+  <p-divider />
+
+  <div class="form-alt">
+    Zaten hesabınız var mı?
+    <p-button
+      label="Giriş yap"
+      severity="secondary"
+      size="small"
+      (onClick)="kimlik.girisPenceresiniAc()"
+    />
+  </div>
+</p-dialog>

@@ -1,11 +1,8 @@
 <main class="duzen">
   <section>
-    <p-tabs [value]="seciliSekme()" (valueChange)="sekmeDegisti($event)" scrollable>
+    <p-tabs [value]="0">
       <p-tablist>
         <p-tab [value]="0"><i class="pi pi-comments"></i> YENİ KONULAR</p-tab>
-        @for (kategori of kategoriler(); track kategori.id) {
-          <p-tab [value]="kategori.id">{{ kategori.ad | uppercase }}</p-tab>
-        }
       </p-tablist>
     </p-tabs>
 

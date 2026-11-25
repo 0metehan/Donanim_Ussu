@@ -12,8 +12,30 @@
   <ng-template #end>
     <input pInputText type="text" placeholder="Ara..." aria-label="Ara" pSize="small" />
     <p-button icon="pi pi-search" [text]="true" severity="secondary" ariaLabel="Ara" />
-    <p-button label="Giriş" icon="pi pi-sign-in" [text]="true" severity="secondary" />
-    <p-button label="Kayıt ol" icon="pi pi-user-plus" severity="success" />
+    @if (kimlik.kullanici(); as kullanici) {
+      <p-button [label]="kullanici.kullaniciAdi" icon="pi pi-user" [text]="true" severity="secondary" />
+      <p-button
+        label="Çıkış"
+        icon="pi pi-sign-out"
+        [text]="true"
+        severity="secondary"
+        (onClick)="kimlik.cikisYap()"
+      />
+    } @else {
+      <p-button
+        label="Giriş"
+        icon="pi pi-sign-in"
+        [text]="true"
+        severity="secondary"
+        (onClick)="kimlik.girisPenceresiniAc()"
+      />
+      <p-button
+        label="Kayıt ol"
+        icon="pi pi-user-plus"
+        severity="success"
+        (onClick)="kimlik.kayitPenceresiniAc()"
+      />
+    }
     <p-button
       [icon]="karanlik() ? 'pi pi-sun' : 'pi pi-moon'"
       [text]="true"

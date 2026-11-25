@@ -10,3 +10,30 @@ body {
 .karanlik body {
   background: var(--p-surface-950);
 }
+
+// Giriş / kayıt formlarının düzeni: solda etiketler, sağda alanlar; dar ekranda alt alta
+.form-izgara {
+  display: grid;
+  grid-template-columns: 12rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.form-etiket {
+  text-align: end;
+}
+
+.form-alt {
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .form-izgara {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .form-etiket {
+    text-align: start;
+  }
+}
