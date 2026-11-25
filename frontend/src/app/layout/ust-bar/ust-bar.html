@@ -1,1 +1,25 @@
-<p>ust-bar works!</p>
+<p-menubar [model]="menu()">
+  <ng-template #start>
+    <p-button
+      label="DONANIM ÜSSÜ"
+      icon="pi pi-microchip"
+      [text]="true"
+      size="large"
+      routerLink="/"
+    />
+  </ng-template>
+
+  <ng-template #end>
+    <input pInputText type="text" placeholder="Ara..." aria-label="Ara" pSize="small" />
+    <p-button icon="pi pi-search" [text]="true" severity="secondary" ariaLabel="Ara" />
+    <p-button label="Giriş" icon="pi pi-sign-in" [text]="true" severity="secondary" />
+    <p-button label="Kayıt ol" icon="pi pi-user-plus" severity="success" />
+    <p-button
+      [icon]="karanlik() ? 'pi pi-sun' : 'pi pi-moon'"
+      [text]="true"
+      severity="secondary"
+      [ariaLabel]="karanlik() ? 'Açık tema' : 'Karanlık tema'"
+      (onClick)="temaDegistir()"
+    />
+  </ng-template>
+</p-menubar>

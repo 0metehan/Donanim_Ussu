@@ -1,0 +1,14 @@
+// PrimeNG sayfa düzeni (yan yana sütunlar) sunmadığı için tek CSS bu:
+// solda konu tablosu, sağda 320px'lik kart; dar ekranda alt alta.
+.duzen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (max-width: 900px) {
+  .duzen {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

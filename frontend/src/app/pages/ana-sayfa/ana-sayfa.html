@@ -1,1 +1,75 @@
-<p>ana-sayfa works!</p>
+<main class="duzen">
+  <section>
+    <p-tabs [value]="seciliSekme()" (valueChange)="sekmeDegisti($event)" scrollable>
+      <p-tablist>
+        <p-tab [value]="0"><i class="pi pi-comments"></i> YENİ KONULAR</p-tab>
+        @for (kategori of kategoriler(); track kategori.id) {
+          <p-tab [value]="kategori.id">{{ kategori.ad | uppercase }}</p-tab>
+        }
+      </p-tablist>
+    </p-tabs>
+
+    @if (hata()) {
+      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
+    }
+
+    <p-table
+      [value]="konular()"
+      [loading]="yukleniyor()"
+      [paginator]="true"
+      [rows]="15"
+      [rowHover]="true"
+      [scrollable]="true"
+      stripedRows
+      size="small"
+      dataKey="id"
+    >
+      <ng-template #header>
+        <tr>
+          <th>#</th>
+          <th><i class="pi pi-comment"></i> Konu</th>
+          <th><i class="pi pi-list"></i> Forumu</th>
+          <th><i class="pi pi-clock"></i> Gönderim</th>
+          <th><i class="pi pi-user"></i> Yazan</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-konu let-i="rowIndex">
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ konu.baslik }}</td>
+          <td><i class="pi pi-comments"></i> {{ konu.kategori?.ad }}</td>
+          <td>{{ konu.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}</td>
+          <td>{{ konu.kullanici?.kullaniciAdi }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">Henüz konu yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </section>
+
+  <aside>
+    <p-card>
+      <ng-template #title><i class="pi pi-file"></i> En Son İçerikler</ng-template>
+
+      <ng-template #subtitle>
+        <p-button label="Yeni mesajlar" severity="secondary" size="small" />
+        <p-button label="Yeni Konu Aç" icon="pi pi-plus" severity="success" size="small" />
+      </ng-template>
+
+      @for (konu of sonKonular(); track konu.id; let ilk = $first) {
+        @if (!ilk) {
+          <p-divider />
+        }
+        <div>{{ konu.baslik }}</div>
+        <small>{{ konu.olusturmaTarihi | date: 'yyyy-MM-dd HH:mm' }}</small>
+      } @empty {
+        <small>İçerik yok.</small>
+      }
+    </p-card>
+  </aside>
+</main>
