@@ -27,6 +27,15 @@
       (onClick)="ara(aramaKutusu.value)"
     />
     @if (kimlik.kullanici(); as kullanici) {
+      @if (kullanici.rol === 'MODERATOR' || kullanici.rol === 'ADMIN') {
+        <p-button
+          label="Raporlar"
+          icon="pi pi-flag"
+          [text]="true"
+          severity="danger"
+          routerLink="/raporlar"
+        />
+      }
       <p-button [label]="kullanici.kullaniciAdi" icon="pi pi-user" [text]="true" severity="secondary" />
       <p-button
         label="Çıkış"

@@ -1,0 +1,227 @@
+<main class="duzen">
+  <section class="sutun">
+    @if (konu(); as k) {
+      <p-breadcrumb [model]="yol()" [home]="{ icon: 'pi pi-home', routerLink: '/' }" />
+
+      <!-- Konu başlığı -->
+      <p-card>
+        @if (konuDuzenleniyor()) {
+          <input pInputText name="baslik" [(ngModel)]="baslik" [fluid]="true" maxlength="200" />
+        } @else {
+          <h2>{{ k.baslik }}</h2>
+          <small>
+            <i class="pi pi-user"></i> {{ k.kullanici.kullaniciAdi }} ·
+            <i class="pi pi-clock"></i> {{ k.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}
+          </small>
+        }
+      </p-card>
+
+      <!-- Konunun ilk mesajı -->
+      <p-card>
+        <div class="mesaj">
+          <div>
+            <strong>{{ k.kullanici.kullaniciAdi }}</strong>
+            @if (k.kullanici.rol) {
+              <div><p-tag [value]="rolAdlari[k.kullanici.rol]" severity="secondary" /></div>
+            }
+          </div>
+
+          <div>
+            <small>{{ k.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }} · #1</small>
+
+            @if (konuDuzenleniyor()) {
+              <textarea pTextarea name="icerik" rows="6" [(ngModel)]="icerik" [fluid]="true"></textarea>
+              <p-button label="Kaydet" icon="pi pi-check" size="small" (onClick)="konuyuKaydet(k)" />
+              <p-button
+                label="Vazgeç"
+                severity="secondary"
+                size="small"
+                [text]="true"
+                (onClick)="konuDuzenleniyor.set(false)"
+              />
+            } @else {
+              <p class="metin">{{ k.icerik }}</p>
+              @if (sahibi(k.kullanici)) {
+                <p-button
+                  label="Düzenle"
+                  icon="pi pi-pencil"
+                  size="small"
+                  [text]="true"
+                  (onClick)="konuyuDuzenle(k)"
+                />
+              }
+              @if (silebilir(k.kullanici)) {
+                <p-button
+                  label="Konuyu sil"
+                  icon="pi pi-trash"
+                  size="small"
+                  severity="danger"
+                  [text]="true"
+                  (onClick)="konuyuSil(k)"
+                />
+              }
+              @if (kimlik.kullanici() && !sahibi(k.kullanici)) {
+                <p-button
+                  label="Raporla"
+                  icon="pi pi-flag"
+                  size="small"
+                  severity="secondary"
+                  [text]="true"
+                  (onClick)="raporPenceresiniAc({ konuId: k.id })"
+                />
+              }
+
+              <!-- Değerlendirme: giriş yapan kendi puanını verir, yapmayan ortalamayı görür -->
+              @let kp = puanBilgisi({ konuId: k.id });
+              <p-rating
+                [ngModel]="kimlik.kullanici() ? kp.benim : kp.ortalama"
+                [readonly]="!kimlik.kullanici()"
+                (onRate)="puanVer($event.value, { konuId: k.id })"
+              />
+              <small>&nbsp; Ortalama {{ kp.ortalama | number: '1.1-1' }} / 5 ({{ kp.sayi }} oy)</small>
+            }
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Yorumlar -->
+      @for (y of yorumlar(); track y.id; let i = $index) {
+        <p-card>
+          <div class="mesaj">
+            <div>
+              <strong>{{ y.kullanici.kullaniciAdi }}</strong>
+              @if (y.kullanici.rol) {
+                <div><p-tag [value]="rolAdlari[y.kullanici.rol]" severity="secondary" /></div>
+              }
+            </div>
+
+            <div>
+              <small>{{ y.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }} · #{{ i + 2 }}</small>
+
+              @if (duzenlenenYorumId() === y.id) {
+                <textarea
+                  pTextarea
+                  name="duzenlenenMetin"
+                  rows="4"
+                  [(ngModel)]="duzenlenenMetin"
+                  [fluid]="true"
+                ></textarea>
+                <p-button label="Kaydet" icon="pi pi-check" size="small" (onClick)="yorumuKaydet(y)" />
+                <p-button
+                  label="Vazgeç"
+                  severity="secondary"
+                  size="small"
+                  [text]="true"
+                  (onClick)="duzenlenenYorumId.set(null)"
+                />
+              } @else {
+                <p class="metin">{{ y.icerik }}</p>
+                @if (sahibi(y.kullanici)) {
+                  <p-button
+                    label="Düzenle"
+                    icon="pi pi-pencil"
+                    size="small"
+                    [text]="true"
+                    (onClick)="yorumuDuzenle(y)"
+                  />
+                }
+                @if (silebilir(y.kullanici)) {
+                  <p-button
+                    label="Sil"
+                    icon="pi pi-trash"
+                    size="small"
+                    severity="danger"
+                    [text]="true"
+                    (onClick)="yorumuSil(y)"
+                  />
+                }
+                @if (kimlik.kullanici() && !sahibi(y.kullanici)) {
+                  <p-button
+                    label="Raporla"
+                    icon="pi pi-flag"
+                    size="small"
+                    severity="secondary"
+                    [text]="true"
+                    (onClick)="raporPenceresiniAc({ yorumId: y.id })"
+                  />
+                }
+
+                @let yp = puanBilgisi({ yorumId: y.id });
+                <p-rating
+                  [ngModel]="kimlik.kullanici() ? yp.benim : yp.ortalama"
+                  [readonly]="!kimlik.kullanici()"
+                  (onRate)="puanVer($event.value, { yorumId: y.id })"
+                />
+                <small>&nbsp; Ortalama {{ yp.ortalama | number: '1.1-1' }} / 5 ({{ yp.sayi }} oy)</small>
+              }
+            </div>
+          </div>
+        </p-card>
+      }
+
+      <!-- Yorum yaz -->
+      <p-card header="Yorum yaz">
+        @if (kimlik.kullanici()) {
+          <textarea
+            pTextarea
+            name="yeniYorum"
+            rows="4"
+            placeholder="Yorumunu yaz..."
+            [(ngModel)]="yeniYorum"
+            [fluid]="true"
+          ></textarea>
+          <p-button label="Gönder" icon="pi pi-send" severity="success" (onClick)="yorumEkle(k)" />
+        } @else {
+          <p-button
+            label="Yorum yazmak için giriş yap"
+            icon="pi pi-sign-in"
+            severity="secondary"
+            (onClick)="kimlik.girisPenceresiniAc()"
+          />
+        }
+      </p-card>
+    }
+  </section>
+
+  <aside>
+    <p-card>
+      <ng-template #title><i class="pi pi-comments"></i> Son Konular</ng-template>
+
+      @for (s of sonKonular(); track s.id; let ilk = $first) {
+        @if (!ilk) {
+          <p-divider />
+        }
+        <a [routerLink]="['/konu', s.id]">{{ s.baslik }}</a>
+        <div>
+          <small>{{ s.kullanici.kullaniciAdi }} · {{ s.kategori.ad }}</small>
+        </div>
+      }
+    </p-card>
+  </aside>
+</main>
+
+<!-- Rapor penceresi -->
+<p-dialog
+  header="Raporla"
+  [visible]="raporHedefi() !== null"
+  (visibleChange)="$event || raporHedefi.set(null)"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '32rem' }"
+  [breakpoints]="{ '768px': '95vw' }"
+>
+  <textarea
+    pTextarea
+    name="raporSebebi"
+    rows="4"
+    placeholder="Neden raporluyorsun? (örn. hakaret, spam, yanlış bilgi)"
+    maxlength="500"
+    [(ngModel)]="raporSebebi"
+    [fluid]="true"
+  ></textarea>
+
+  <ng-template #footer>
+    <p-button label="Vazgeç" severity="secondary" [text]="true" (onClick)="raporHedefi.set(null)" />
+    <p-button label="Gönder" icon="pi pi-flag" severity="danger" (onClick)="raporGonder()" />
+  </ng-template>
+</p-dialog>

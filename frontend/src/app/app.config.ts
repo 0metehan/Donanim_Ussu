@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './services/token-interceptor';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
@@ -12,6 +13,8 @@ export const appConfig: ApplicationConfig = {
     // withComponentInputBinding: adresteki :id gibi değerler bileşene input olarak gelir
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([tokenInterceptor])),
+    ConfirmationService,
+    MessageService,
     providePrimeNG({
       theme: {
         preset: Aura,

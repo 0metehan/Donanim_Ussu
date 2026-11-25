@@ -24,8 +24,13 @@ public class YetkiKontrol {
         if (kimlik == null || kimlik instanceof AnonymousAuthenticationToken) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Giris yapmaniz gerekiyor");
         }
-        return repository.findByKullaniciAdi(kimlik.getName())
+        Kullanici kullanici = repository.findByKullaniciAdi(kimlik.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici bulunamadi"));
+        // Banli kullanici hicbir islem yapamaz
+        if (kullanici.isBanli()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Hesabiniz banlandi");
+        }
+        return kullanici;
     }
 
     public void sahibiVeyaYetkili(Kullanici sahip) {
@@ -33,6 +38,13 @@ public class YetkiKontrol {
         boolean yetkili = ben.getRol() == Rol.MODERATOR || ben.getRol() == Rol.ADMIN;
         if (!yetkili && !ben.getId().equals(sahip.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bu islem icin yetkiniz yok");
+        }
+    }
+
+    public void yetkiliMi() {
+        Rol rol = girisYapan().getRol();
+        if (rol != Rol.MODERATOR && rol != Rol.ADMIN) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bu islemi sadece moderator veya admin yapabilir");
         }
     }
 

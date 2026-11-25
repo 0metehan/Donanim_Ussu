@@ -7,7 +7,6 @@
   [dismissableMask]="true"
   [style]="{ width: '46rem' }"
   [breakpoints]="{ '768px': '95vw' }"
-  (onHide)="pencereKapandi()"
 >
   <form class="form-izgara" (ngSubmit)="konuyuGonder()">
     <label class="form-etiket" for="konuBaslik">Başlık:</label>
@@ -45,11 +44,6 @@
       [(ngModel)]="icerik"
       [fluid]="true"
     ></textarea>
-
-    @if (hata()) {
-      <span></span>
-      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
-    }
 
     <span></span>
     <div>

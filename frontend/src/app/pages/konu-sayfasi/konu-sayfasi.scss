@@ -1,0 +1,32 @@
+// Sadece düzen: solda konu ve yorumlar, sağda "Son Konular"; dar ekranda alt alta
+.duzen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.sutun {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+// Her mesajda solda yazan, sağda içerik
+.mesaj {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+// Yazılan satır sonları korunsun
+.metin {
+  white-space: pre-line;
+}
+
+@media (max-width: 900px) {
+  .duzen,
+  .mesaj {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -7,7 +7,6 @@
   [dismissableMask]="true"
   [style]="{ width: '46rem' }"
   [breakpoints]="{ '768px': '95vw' }"
-  (onHide)="pencereKapandi()"
 >
   <form class="form-izgara" (ngSubmit)="girisYap()">
     <label class="form-etiket" for="kullaniciAdi">Kullanıcı adınız:</label>
@@ -45,11 +44,6 @@
       <label for="beniHatirla"> Beni hatırla</label>
     </div>
 
-    @if (hata()) {
-      <span></span>
-      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
-    }
-
     <span></span>
     <div>
       <p-button
@@ -57,7 +51,6 @@
         label="Giriş"
         icon="pi pi-lock"
         severity="success"
-        [loading]="gonderiliyor()"
       />
     </div>
   </form>

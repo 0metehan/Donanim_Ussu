@@ -11,6 +11,17 @@ body {
   background: var(--p-surface-950);
 }
 
+// Bağlantılar tarayıcının mavi-altı çizili hali yerine yazı rengiyle görünsün,
+// üzerine gelince temanın yeşil rengini alsın
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--p-primary-color);
+}
+
 // Üst bar sayfa içeriğinin üstünde kalsın: yoksa "Forumlar" açılır menüsü,
 // konu tablosunun başlığının (z-index: 2) ve sekme çizgisinin arkasına düşüyor.
 app-ust-bar {

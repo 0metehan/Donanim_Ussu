@@ -34,6 +34,9 @@ public class KullaniciService {
         if (!kullanici.getSifreHash().equals(hashle(sifre))) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici adi veya sifre hatali");
         }
+        if (kullanici.isBanli()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Hesabiniz banlandi");
+        }
         return jwtUtil.tokenUret(kullanici.getKullaniciAdi());
     }
 

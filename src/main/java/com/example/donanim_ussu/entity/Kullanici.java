@@ -41,6 +41,13 @@ public class Kullanici {
     @Column(name = "rol", nullable = false, length = 20)
     private Rol rol = Rol.KULLANICI;
 
+    // Moderator/admin'in verdigi uyari sayisi; 3 olunca kullanici banlanir
+    @Column(name = "uyari_sayisi", nullable = false, columnDefinition = "int default 0")
+    private int uyariSayisi;
+
+    @Column(name = "banli", nullable = false, columnDefinition = "bit default 0")
+    private boolean banli;
+
     @Column(name = "olusturma_tarihi", nullable = false, updatable = false)
     private LocalDateTime olusturmaTarihi;
 

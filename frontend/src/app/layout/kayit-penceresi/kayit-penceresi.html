@@ -7,7 +7,6 @@
   [dismissableMask]="true"
   [style]="{ width: '46rem' }"
   [breakpoints]="{ '768px': '95vw' }"
-  (onHide)="pencereKapandi()"
 >
   <form class="form-izgara" (ngSubmit)="kayitOl()">
     <span class="form-etiket" id="kayitRolEtiketi">Hesap türü:</span>
@@ -52,7 +51,6 @@
         name="sifre"
         autocomplete="new-password"
         [type]="sifreGoster() ? 'text' : 'password'"
-        [placeholder]="'En az ' + enAzParola + ' karakter'"
         [(ngModel)]="sifre"
       />
       <p-button
@@ -75,11 +73,6 @@
       [fluid]="true"
     />
 
-    @if (hata()) {
-      <span></span>
-      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
-    }
-
     <span></span>
     <div>
       <p-button
@@ -87,7 +80,6 @@
         label="Kayıt ol"
         icon="pi pi-user-plus"
         severity="success"
-        [loading]="gonderiliyor()"
       />
     </div>
   </form>

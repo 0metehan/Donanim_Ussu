@@ -1,0 +1,47 @@
+<main style="padding: 1rem">
+  <p-card header="Raporlar">
+    <p-table [value]="raporlar()" [paginator]="true" [rows]="15" stripedRows size="small">
+      <ng-template #header>
+        <tr>
+          <th>Tarih</th>
+          <th>Raporlayan</th>
+          <th>Raporlanan</th>
+          <th>Yazan</th>
+          <th>Sebep</th>
+          <th></th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-r>
+        <tr>
+          <td>{{ r.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}</td>
+          <td>{{ r.kullanici.kullaniciAdi }}</td>
+          <td>
+            @if (r.yorum) {
+              <a [routerLink]="['/konu', r.yorum.konu.id]">{{ r.yorum.konu.baslik }}</a>
+              <div><small>Yorum: "{{ r.yorum.icerik }}"</small></div>
+            } @else {
+              <a [routerLink]="['/konu', r.konu?.id]">{{ r.konu?.baslik }}</a>
+            }
+          </td>
+          <td>
+            {{ sahip(r).kullaniciAdi }}
+            <div><small>Uyarı: {{ sahip(r).uyariSayisi ?? 0 }}/3</small></div>
+          </td>
+          <td>{{ r.sebep }}</td>
+          <td>
+            <p-button label="Uyar" severity="warn" size="small" [text]="true" (onClick)="uyar(r)" />
+            <p-button label="İçeriği sil" severity="danger" size="small" [text]="true" (onClick)="icerigiSil(r)" />
+            <p-button label="Raporu kapat" severity="secondary" size="small" [text]="true" (onClick)="kapat(r)" />
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">Rapor yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</main>
