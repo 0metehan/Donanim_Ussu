@@ -1,1 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'primeicons/primeicons.css';
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--p-surface-100);
+}
+.karanlik body { background: var(--p-surface-950); }
