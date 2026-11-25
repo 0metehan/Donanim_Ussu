@@ -11,6 +11,14 @@ body {
   background: var(--p-surface-950);
 }
 
+// Üst bar sayfa içeriğinin üstünde kalsın: yoksa "Forumlar" açılır menüsü,
+// konu tablosunun başlığının (z-index: 2) ve sekme çizgisinin arkasına düşüyor.
+app-ust-bar {
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+
 // Giriş / kayıt formlarının düzeni: solda etiketler, sağda alanlar; dar ekranda alt alta
 .form-izgara {
   display: grid;

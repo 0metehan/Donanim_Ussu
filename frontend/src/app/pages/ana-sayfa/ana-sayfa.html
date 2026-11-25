@@ -55,7 +55,13 @@
 
       <ng-template #subtitle>
         <p-button label="Yeni mesajlar" severity="secondary" size="small" />
-        <p-button label="Yeni Konu Aç" icon="pi pi-plus" severity="success" size="small" />
+        <p-button
+          label="Yeni Konu Aç"
+          icon="pi pi-plus"
+          severity="success"
+          size="small"
+          (onClick)="yeniKonuAc()"
+        />
       </ng-template>
 
       @for (konu of sonKonular(); track konu.id; let ilk = $first) {
@@ -70,3 +76,5 @@
     </p-card>
   </aside>
 </main>
+
+<app-konu-penceresi [(acik)]="konuPenceresiAcik" (eklendi)="konulariGetir()" />

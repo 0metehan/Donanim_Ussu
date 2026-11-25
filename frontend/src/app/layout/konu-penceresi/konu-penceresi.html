@@ -1,0 +1,65 @@
+<p-dialog
+  header="Yeni Konu Aç"
+  [(visible)]="acik"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '46rem' }"
+  [breakpoints]="{ '768px': '95vw' }"
+  (onHide)="pencereKapandi()"
+>
+  <form class="form-izgara" (ngSubmit)="konuyuGonder()">
+    <label class="form-etiket" for="konuBaslik">Başlık:</label>
+    <input
+      pInputText
+      id="konuBaslik"
+      name="baslik"
+      [maxlength]="enFazlaBaslik"
+      placeholder="Konunun başlığı"
+      [(ngModel)]="baslik"
+      [fluid]="true"
+    />
+
+    <label class="form-etiket" for="konuKategori">Kategori:</label>
+    <p-select
+      inputId="konuKategori"
+      name="kategoriId"
+      [options]="kategoriler()"
+      optionLabel="ad"
+      optionValue="id"
+      placeholder="Kategori seç"
+      appendTo="body"
+      [(ngModel)]="kategoriId"
+      [fluid]="true"
+    />
+
+    <label class="form-etiket" for="konuIcerik">İçerik:</label>
+    <textarea
+      pTextarea
+      id="konuIcerik"
+      name="icerik"
+      rows="8"
+      placeholder="Ne sormak ya da paylaşmak istiyorsun?"
+      [autoResize]="true"
+      [(ngModel)]="icerik"
+      [fluid]="true"
+    ></textarea>
+
+    @if (hata()) {
+      <span></span>
+      <p-message severity="error" icon="pi pi-exclamation-triangle">{{ hata() }}</p-message>
+    }
+
+    <span></span>
+    <div>
+      <p-button
+        type="submit"
+        label="Konuyu Aç"
+        icon="pi pi-send"
+        severity="success"
+        [loading]="gonderiliyor()"
+      />
+    </div>
+  </form>
+</p-dialog>

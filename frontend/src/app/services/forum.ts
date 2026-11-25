@@ -20,4 +20,10 @@ export class Forum {
     }
     return this.http.get<Konu[]>('/api/Konu');
   }
+
+  // Yeni konu açar -> POST /api/Konu
+  // Konunun sahibini backend token'dan alır, kullanıcı göndermeye gerek yok.
+  konuEkle(baslik: string, icerik: string, kategoriId: number): Observable<Konu> {
+    return this.http.post<Konu>('/api/Konu', { baslik, icerik, kategori: { id: kategoriId } });
+  }
 }
