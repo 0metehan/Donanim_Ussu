@@ -49,6 +49,17 @@ public class KullaniciService {
         return repository.save(ben);
     }
 
+    // Sadece "islemci.png" gibi düz bir dosya adı kabul edilir: klasör (/) ya da başka site adresi kaydedilemez.
+    // Boş gelirse avatar kaldırılır.
+    public Kullanici avatarGuncelle(String avatar) {
+        if (avatar != null && !avatar.isBlank() && !avatar.matches("[a-zA-Z0-9_-]+\\.(png|jpg|jpeg|webp|svg|gif)")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Gecersiz avatar");
+        }
+        Kullanici ben = yetkiKontrol.girisYapan();
+        ben.setAvatar(avatar == null || avatar.isBlank() ? null : avatar);
+        return repository.save(ben);
+    }
+
     public Kullanici ben() {
         return yetkiKontrol.girisYapan();
     }

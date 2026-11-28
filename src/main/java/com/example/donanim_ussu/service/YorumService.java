@@ -64,13 +64,14 @@ public class YorumService {
     }
 
     private Yorum denetle(Yorum yorum) {
-        if (dilFiltresi.uygunsuzMu(yorum.getIcerik())) {
+        String kelime = dilFiltresi.yasakliKelime(yorum.getIcerik());
+        if (kelime != null) {
             yorum.setGizli(true);
             repository.save(yorum);
             Rapor rapor = new Rapor();
             rapor.setYorum(yorum);
             rapor.setKullanici(yorum.getKullanici());
-            rapor.setSebep("Otomatik: uygunsuz kelime");
+            rapor.setSebep("Otomatik: uygunsuz kelime (yorumda: \"" + kelime + "\")");
             raporRepository.save(rapor);
         }
         return yorum;

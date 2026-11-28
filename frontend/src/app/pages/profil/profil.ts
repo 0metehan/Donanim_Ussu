@@ -3,13 +3,15 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
+import { Dialog } from 'primeng/dialog';
 import { Divider } from 'primeng/divider';
 import { ProgressBar } from 'primeng/progressbar';
 import { Tag } from 'primeng/tag';
 import { Textarea } from 'primeng/textarea';
-import { Degerlendirme, Kullanici, Yorum } from '../../models/modeller';
+import { AVATARLAR, Degerlendirme, Kullanici, Yorum, avatarAdresi } from '../../models/modeller';
 import { Forum } from '../../services/forum';
 import { Kimlik } from '../../services/kimlik';
 
@@ -22,7 +24,7 @@ const RANKLAR = [
 ];
 
 @Component({
-  imports: [DatePipe, FormsModule, RouterLink, Button, Card, Divider, ProgressBar, Tag, Textarea],
+  imports: [DatePipe, FormsModule, RouterLink, Avatar, Button, Card, Dialog, Divider, ProgressBar, Tag, Textarea],
   selector: 'app-profil',
   templateUrl: './profil.html',
 })
@@ -37,6 +39,10 @@ export class Profil {
   protected readonly yorumlar = signal<Yorum[]>([]);
   protected readonly puanlar = signal<Degerlendirme[]>([]);
   protected biyografi = '';
+
+  protected readonly avatarlar = AVATARLAR;
+  protected readonly avatarAdresi = avatarAdresi;
+  protected readonly avatarPenceresiAcik = signal(false);
 
   protected readonly benimProfilim = computed(() => this.kimlik.kullanici()?.id === Number(this.id()));
 
@@ -71,6 +77,15 @@ export class Profil {
     this.forum.biyografiGuncelle(this.biyografi).subscribe((k) => {
       this.kullanici.set(k);
       this.bildirim.add({ severity: 'success', summary: 'Biyografi kaydedildi.' });
+    });
+  }
+
+  // Seçilen avatarı kaydeder; üst bardaki küçük avatar da hemen değişsin diye kimlik de güncellenir
+  protected avatarSec(avatar: string): void {
+    this.forum.avatarGuncelle(avatar).subscribe((k) => {
+      this.kullanici.set(k);
+      this.kimlik.kullanici.set(k);
+      this.avatarPenceresiAcik.set(false);
     });
   }
 }

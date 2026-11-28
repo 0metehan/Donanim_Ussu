@@ -66,13 +66,20 @@ public class KonuService {
     }
 
     private Konu denetle(Konu konu) {
-        if (dilFiltresi.uygunsuzMu(konu.getBaslik() + " " + konu.getIcerik())) {
+        // Önce başlığa, sonra içeriğe bakılır; raporda kelimenin nerede yakalandığı yazılır
+        String yer = "başlıkta";
+        String kelime = dilFiltresi.yasakliKelime(konu.getBaslik());
+        if (kelime == null) {
+            yer = "içerikte";
+            kelime = dilFiltresi.yasakliKelime(konu.getIcerik());
+        }
+        if (kelime != null) {
             konu.setGizli(true);
             repository.save(konu);
             Rapor rapor = new Rapor();
             rapor.setKonu(konu);
             rapor.setKullanici(konu.getKullanici());
-            rapor.setSebep("Otomatik: uygunsuz kelime");
+            rapor.setSebep("Otomatik: uygunsuz kelime (" + yer + ": \"" + kelime + "\")");
             raporRepository.save(rapor);
         }
         return konu;

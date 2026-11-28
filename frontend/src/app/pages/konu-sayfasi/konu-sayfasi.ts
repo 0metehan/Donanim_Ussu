@@ -3,6 +3,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { Avatar } from 'primeng/avatar';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
@@ -12,7 +13,7 @@ import { InputText } from 'primeng/inputtext';
 import { Rating } from 'primeng/rating';
 import { Tag } from 'primeng/tag';
 import { Textarea } from 'primeng/textarea';
-import { Degerlendirme, Konu, Kullanici, Yorum } from '../../models/modeller';
+import { Degerlendirme, Konu, Kullanici, Yorum, avatarAdresi } from '../../models/modeller';
 import { Forum } from '../../services/forum';
 import { Kimlik, ROL_ADLARI } from '../../services/kimlik';
 
@@ -24,6 +25,7 @@ type Hedef = { konuId?: number; yorumId?: number };
     DecimalPipe,
     FormsModule,
     RouterLink,
+    Avatar,
     Breadcrumb,
     Button,
     Card,
@@ -45,6 +47,7 @@ export class KonuSayfasi {
   private readonly bildirim = inject(MessageService);
   protected readonly kimlik = inject(Kimlik);
   protected readonly rolAdlari = ROL_ADLARI;
+  protected readonly avatarAdresi = avatarAdresi;
 
   readonly id = input<string>();
 

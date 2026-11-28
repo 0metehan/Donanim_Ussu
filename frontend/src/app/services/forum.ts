@@ -98,6 +98,10 @@ export class Forum {
     return this.http.put<Kullanici>('/api/Kullanici/biyografi', { biyografi });
   }
 
+  avatarGuncelle(avatar: string): Observable<Kullanici> {
+    return this.http.put<Kullanici>('/api/Kullanici/avatar', { avatar });
+  }
+
   raporKapat(id: number): Observable<void> {
     return this.http.delete<void>(`/api/Rapor/${id}`);
   }

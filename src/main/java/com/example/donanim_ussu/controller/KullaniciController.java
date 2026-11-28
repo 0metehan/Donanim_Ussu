@@ -35,6 +35,11 @@ public class KullaniciController {
         return service.biyografiGuncelle(istek.get("biyografi"));
     }
 
+    @PutMapping("/avatar")
+    public Kullanici avatar(@RequestBody Map<String, String> istek) {
+        return service.avatarGuncelle(istek.get("avatar"));
+    }
+
     @GetMapping("/ben")
     public Kullanici ben() {
         return service.ben();

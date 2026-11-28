@@ -4,6 +4,24 @@ body {
   margin: 0;
   font-family: system-ui, sans-serif;
   background: var(--p-surface-100);
+  // Boşluksuz çok uzun kelimeler (örn. "aaaa...") satıra sığmazsa bölünsün, sayfayı taşırmasın
+  overflow-wrap: break-word;
+}
+
+// Tablolarda: konu başlığı sütunu gerekirse bölünsün, diğer kısa sütunlar (forum, tarih, yazan) tek satırda kalsın
+.p-datatable td,
+.p-datatable th {
+  white-space: nowrap;
+}
+
+.p-datatable td.uzun-metin {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+// Breadcrumb'daki uzun konu başlığı da bölünsün
+.p-breadcrumb {
+  overflow-wrap: anywhere;
 }
 
 .karanlik body {
@@ -23,6 +41,12 @@ app-ust-bar {
   display: block;
   position: relative;
   z-index: 100;
+}
+
+// Üst barın sağ tarafındaki her şey (arama, avatar, butonlar) dikeyde aynı hizada dursun
+app-ust-bar .p-menubar-end {
+  display: flex;
+  align-items: center;
 }
 
 .form-izgara {

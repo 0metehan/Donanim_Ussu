@@ -30,7 +30,7 @@
       <ng-template #body let-konu let-i="rowIndex">
         <tr>
           <td>{{ i + 1 }}</td>
-          <td><a [routerLink]="['/konu', konu.id]">{{ konu.baslik }}</a></td>
+          <td class="uzun-metin"><a [routerLink]="['/konu', konu.id]">{{ konu.baslik }}</a></td>
           <td><i class="pi pi-comments"></i> {{ konu.kategori?.ad }}</td>
           <td>{{ konu.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}</td>
           <td>{{ konu.kullanici?.kullaniciAdi }}</td>

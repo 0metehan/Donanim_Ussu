@@ -14,7 +14,18 @@ export interface Kullanici {
   uyariSayisi?: number;
   banli?: boolean;
   biyografi?: string;
+  avatar?: string;
   olusturmaTarihi?: string;
+}
+
+// Seçilebilen hazır profil fotoğrafları.
+// Fotoğrafı frontend/public/avatarlar/ klasörüne koy, dosya adını buraya ekle. Örn: 'islemci.png'
+// (Sadece harf, rakam, - ve _ içeren adlar; uzantı png, jpg, jpeg, webp, svg ya da gif olmalı.)
+export const AVATARLAR: string[] = ["pro1.svg"];
+
+// Avatar dosya adını tarayıcıdaki adrese çevirir; avatar yoksa undefined döner (ikon gösterilir)
+export function avatarAdresi(avatar?: string | null): string | undefined {
+  return avatar ? `/avatarlar/${avatar}` : undefined;
 }
 
 export interface Yorum {

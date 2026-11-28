@@ -7,6 +7,8 @@
 
 .sutun {
   display: grid;
+  // Sütun en uzun kelimeye göre genişlemesin; uzun kelimeler satıra sığacak şekilde bölünsün
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   align-content: start;
 }
@@ -15,6 +17,22 @@
   display: grid;
   grid-template-columns: 10rem minmax(0, 1fr);
   gap: 1rem;
+}
+
+// Mesajın sol sütunu: avatar, altında ad ve rol; hepsi ortalı
+.mesaj > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+
+// Konu başlığının altındaki "avatar ad · tarih" satırı dikeyde ortalı
+.yazar-satiri {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .metin {

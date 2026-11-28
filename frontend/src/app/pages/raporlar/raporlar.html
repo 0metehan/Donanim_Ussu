@@ -16,19 +16,23 @@
         <tr>
           <td>{{ r.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}</td>
           <td>{{ r.kullanici.kullaniciAdi }}</td>
-          <td>
+          <td class="uzun-metin">
             @if (r.yorum) {
               <a [routerLink]="['/konu', r.yorum.konu.id]">{{ r.yorum.konu.baslik }}</a>
               <div><small>Yorum: "{{ r.yorum.icerik }}"</small></div>
             } @else {
               <a [routerLink]="['/konu', r.konu?.id]">{{ r.konu?.baslik }}</a>
+              <!-- İçerik uzunsa ilk 150 karakteri gösterilir -->
+              <div>
+                <small>İçerik: "{{ (r.konu?.icerik ?? '').slice(0, 150) }}{{ (r.konu?.icerik?.length ?? 0) > 150 ? '…' : '' }}"</small>
+              </div>
             }
           </td>
           <td>
             {{ sahip(r).kullaniciAdi }}
             <div><small>Uyarı: {{ sahip(r).uyariSayisi ?? 0 }}/3</small></div>
           </td>
-          <td>{{ r.sebep }}</td>
+          <td class="uzun-metin">{{ r.sebep }}</td>
           <td>
             <p-button label="Uyar" severity="warn" size="small" [text]="true" (onClick)="uyar(r)" />
             <p-button label="İçeriği sil" severity="danger" size="small" [text]="true" (onClick)="icerigiSil(r)" />

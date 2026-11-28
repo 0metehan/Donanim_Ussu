@@ -36,13 +36,24 @@
           routerLink="/raporlar"
         />
       }
-      <p-button
-        [label]="kullanici.kullaniciAdi"
-        icon="pi pi-user"
-        [text]="true"
-        severity="secondary"
-        [routerLink]="['/profil', kullanici.id]"
-      />
+      <!-- Avatar ve kullanıcı adı yan yana, dikeyde ortalı -->
+      <span style="display: inline-flex; align-items: center">
+        @if (kullanici.avatar) {
+          <p-avatar
+            [image]="avatarAdresi(kullanici.avatar)"
+            shape="circle"
+            [style]="{ cursor: 'pointer' }"
+            [routerLink]="['/profil', kullanici.id]"
+          />
+        }
+        <p-button
+          [label]="kullanici.kullaniciAdi"
+          [icon]="kullanici.avatar ? '' : 'pi pi-user'"
+          [text]="true"
+          severity="secondary"
+          [routerLink]="['/profil', kullanici.id]"
+        />
+      </span>
       <p-button
         label="Çıkış"
         icon="pi pi-sign-out"

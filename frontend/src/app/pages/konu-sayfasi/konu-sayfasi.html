@@ -8,8 +8,14 @@
           <input pInputText name="baslik" [(ngModel)]="baslik" [fluid]="true" maxlength="200" />
         } @else {
           <h2>{{ k.baslik }}</h2>
-          <small>
-            <i class="pi pi-user"></i> {{ k.kullanici.kullaniciAdi }} ·
+          <small class="yazar-satiri">
+            <!-- PrimeNG ikon verilince resmi göstermiyor; ikon sadece avatar yokken -->
+            <p-avatar
+              [image]="avatarAdresi(k.kullanici.avatar)"
+              [icon]="k.kullanici.avatar ? '' : 'pi pi-user'"
+              shape="circle"
+            />
+            {{ k.kullanici.kullaniciAdi }} ·
             <i class="pi pi-clock"></i> {{ k.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}
           </small>
         }
@@ -18,6 +24,14 @@
       <p-card>
         <div class="mesaj">
           <div>
+            <a [routerLink]="['/profil', k.kullanici.id]">
+              <p-avatar
+                [image]="avatarAdresi(k.kullanici.avatar)"
+                [icon]="k.kullanici.avatar ? '' : 'pi pi-user'"
+                size="xlarge"
+                shape="circle"
+              />
+            </a>
             <a [routerLink]="['/profil', k.kullanici.id]"><strong>{{ k.kullanici.kullaniciAdi }}</strong></a>
             @if (k.kullanici.rol) {
               <div><p-tag [value]="rolAdlari[k.kullanici.rol]" severity="secondary" /></div>
@@ -85,6 +99,14 @@
         <p-card>
           <div class="mesaj">
             <div>
+              <a [routerLink]="['/profil', y.kullanici.id]">
+                <p-avatar
+                  [image]="avatarAdresi(y.kullanici.avatar)"
+                  [icon]="y.kullanici.avatar ? '' : 'pi pi-user'"
+                  size="xlarge"
+                  shape="circle"
+                />
+              </a>
               <a [routerLink]="['/profil', y.kullanici.id]"><strong>{{ y.kullanici.kullaniciAdi }}</strong></a>
               @if (y.kullanici.rol) {
                 <div><p-tag [value]="rolAdlari[y.kullanici.rol]" severity="secondary" /></div>

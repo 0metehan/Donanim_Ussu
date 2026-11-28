@@ -50,6 +50,10 @@ public class Kullanici {
     @Column(name = "biyografi", columnDefinition = "TEXT")
     private String biyografi;
 
+    // Seçilen hazır profil fotoğrafının dosya adı (örn. "islemci.png"); dosyalar frontend/public/avatarlar içinde
+    @Column(name = "avatar", length = 100)
+    private String avatar;
+
     @Column(name = "olusturma_tarihi", nullable = false, updatable = false)
     private LocalDateTime olusturmaTarihi;
 

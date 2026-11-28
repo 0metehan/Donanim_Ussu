@@ -1,14 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
 import { InputText } from 'primeng/inputtext';
+import { avatarAdresi } from '../../models/modeller';
 import { Forum } from '../../services/forum';
 import { Kimlik } from '../../services/kimlik';
 
 @Component({
-  imports: [RouterLink, Button, Menubar, InputText],
+  imports: [RouterLink, Avatar, Button, Menubar, InputText],
   selector: 'app-ust-bar',
   templateUrl: './ust-bar.html',
 })
@@ -16,6 +18,8 @@ export class UstBar {
   private readonly forum = inject(Forum);
   protected readonly kimlik = inject(Kimlik);
   private readonly router = inject(Router);
+
+  protected readonly avatarAdresi = avatarAdresi;
 
   protected readonly karanlik = signal(false);
 
