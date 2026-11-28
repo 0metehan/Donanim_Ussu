@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class KullaniciService {
@@ -89,7 +90,13 @@ public class KullaniciService {
         Kullanici kullanici = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kullanici bulunamadi"));
         yetkiKontrol.sahibiVeyaYetkili(kullanici);
-        repository.delete(kullanici);
+        kullanici.setKullaniciAdi("Silinen kullanıcı #" + id);
+        kullanici.setEposta("silinen" + id + "@silindi");
+        kullanici.setSifreHash(UUID.randomUUID().toString());
+        kullanici.setBiyografi(null);
+        kullanici.setAvatar(null);
+        kullanici.setBanli(true);
+        repository.save(kullanici);
     }
     private String hashle(String sifre) {
         try {

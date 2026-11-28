@@ -1,8 +1,8 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Router, RouterLink } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Avatar } from 'primeng/avatar';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
@@ -11,17 +11,9 @@ import { Divider } from 'primeng/divider';
 import { ProgressBar } from 'primeng/progressbar';
 import { Tag } from 'primeng/tag';
 import { Textarea } from 'primeng/textarea';
-import { AVATARLAR, Degerlendirme, Kullanici, Yorum, avatarAdresi } from '../../models/modeller';
+import { AVATARLAR, Degerlendirme, Kullanici, RANKLAR, Yorum, avatarAdresi } from '../../models/modeller';
 import { Forum } from '../../services/forum';
 import { Kimlik } from '../../services/kimlik';
-
-const RANKLAR = [
-  { ad: 'Çaylak', min: 0 },
-  { ad: 'Üye', min: 10 },
-  { ad: 'Deneyimli', min: 30 },
-  { ad: 'Uzman', min: 60 },
-  { ad: 'Usta', min: 100 },
-];
 
 @Component({
   imports: [DatePipe, FormsModule, RouterLink, Avatar, Button, Card, Dialog, Divider, ProgressBar, Tag, Textarea],
@@ -31,6 +23,8 @@ const RANKLAR = [
 export class Profil {
   private readonly forum = inject(Forum);
   private readonly bildirim = inject(MessageService);
+  private readonly onay = inject(ConfirmationService);
+  private readonly router = inject(Router);
   protected readonly kimlik = inject(Kimlik);
 
   readonly id = input<string>();
@@ -70,6 +64,21 @@ export class Profil {
       });
       this.forum.kullaniciYorumlari(id).subscribe((l) => this.yorumlar.set(l));
       this.forum.kullaniciPuanlari(id).subscribe((l) => this.puanlar.set(l));
+    });
+  }
+
+  protected profiliSil(): void {
+    this.onay.confirm({
+      header: 'Profili sil',
+      message: 'Hesabın silinecek. Konuların ve yorumların "Silinen kullanıcı" adıyla kalacak. Emin misin?',
+      acceptButtonProps: { label: 'Sil', severity: 'danger', style: { width: '7rem' } },
+      rejectButtonProps: { label: 'Vazgeç', severity: 'secondary', outlined: true, style: { width: '7rem' } },
+      accept: () =>
+        this.forum.kullaniciSil(Number(this.id())).subscribe(() => {
+          this.kimlik.cikisYap();
+          this.router.navigate(['/']);
+          this.bildirim.add({ severity: 'success', summary: 'Profilin silindi.' });
+        }),
     });
   }
 

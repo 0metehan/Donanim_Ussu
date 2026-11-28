@@ -64,3 +64,15 @@ export interface Konu {
   guncellemeTarihi?: string;
   gizli?: boolean;
 }
+
+export const RANKLAR = [
+  { ad: 'Çaylak', min: 0 },
+  { ad: 'Üye', min: 10 },
+  { ad: 'Deneyimli', min: 30 },
+  { ad: 'Uzman', min: 60 },
+  { ad: 'Usta', min: 100 },
+];
+
+export function rankAdi(puan: number): string {
+  return [...RANKLAR].reverse().find((r) => puan >= r.min)!.ad;
+}

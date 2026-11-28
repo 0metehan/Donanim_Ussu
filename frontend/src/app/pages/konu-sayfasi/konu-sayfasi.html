@@ -8,20 +8,9 @@
           <input pInputText name="baslik" [(ngModel)]="baslik" [fluid]="true" maxlength="200" />
         } @else {
           <h2>{{ k.baslik }}</h2>
-          <small class="yazar-satiri">
-            <!-- PrimeNG ikon verilince resmi göstermiyor; ikon sadece avatar yokken -->
-            <p-avatar
-              [image]="avatarAdresi(k.kullanici.avatar)"
-              [icon]="k.kullanici.avatar ? '' : 'pi pi-user'"
-              shape="circle"
-            />
-            {{ k.kullanici.kullaniciAdi }} ·
-            <i class="pi pi-clock"></i> {{ k.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}
-          </small>
         }
-      </p-card>
+        <p-divider />
 
-      <p-card>
         <div class="mesaj">
           <div>
             <a [routerLink]="['/profil', k.kullanici.id]">

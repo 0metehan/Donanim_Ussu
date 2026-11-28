@@ -94,8 +94,24 @@ export class Forum {
     return this.http.get<Degerlendirme[]>('/api/Degerlendirme', { params: { kullaniciId } });
   }
 
+  tumKullanicilar(): Observable<Kullanici[]> {
+    return this.http.get<Kullanici[]>('/api/Kullanici');
+  }
+
+  tumYorumlar(): Observable<Yorum[]> {
+    return this.http.get<Yorum[]>('/api/Yorum');
+  }
+
+  tumPuanlar(): Observable<Degerlendirme[]> {
+    return this.http.get<Degerlendirme[]>('/api/Degerlendirme');
+  }
+
   biyografiGuncelle(biyografi: string): Observable<Kullanici> {
     return this.http.put<Kullanici>('/api/Kullanici/biyografi', { biyografi });
+  }
+
+  kullaniciSil(id: number): Observable<void> {
+    return this.http.delete<void>(`/api/Kullanici/${id}`);
   }
 
   avatarGuncelle(avatar: string): Observable<Kullanici> {

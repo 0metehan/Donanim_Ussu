@@ -19,6 +19,10 @@ public class DegerlendirmeService {
         this.yetkiKontrol = yetkiKontrol;
     }
 
+    public List<Degerlendirme> tumu() {
+        return repository.findAll();
+    }
+
     public List<Degerlendirme> kullaniciIcin(Long kullaniciId) {
         return repository.kullanicininAldigiPuanlar(kullaniciId);
     }

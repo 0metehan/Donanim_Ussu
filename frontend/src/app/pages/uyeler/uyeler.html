@@ -1,0 +1,42 @@
+<main style="padding: 1rem">
+  <p-card header="Üyeler">
+    <p-table [value]="uyeler()" [paginator]="true" [rows]="20" stripedRows size="small">
+      <ng-template #header>
+        <tr>
+          <th>#</th>
+          <th>Kullanıcı</th>
+          <th>Rank</th>
+          <th>Yorum</th>
+          <th>Yıldız</th>
+          <th>Puan</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-u let-i="rowIndex">
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>
+            <a [routerLink]="['/profil', u.kullanici.id]" style="display: inline-flex; align-items: center; gap: 0.5rem">
+              <p-avatar
+                [image]="avatarAdresi(u.kullanici.avatar)"
+                [icon]="u.kullanici.avatar ? '' : 'pi pi-user'"
+                shape="circle"
+              />
+              {{ u.kullanici.kullaniciAdi }}
+            </a>
+          </td>
+          <td><p-tag [value]="u.rank" severity="success" /></td>
+          <td>{{ u.yorum }}</td>
+          <td>{{ u.yildiz }}</td>
+          <td><strong>{{ u.puan }}</strong></td>
+        </tr>
+      </ng-template>
+
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="6">Henüz üye yok.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</main>

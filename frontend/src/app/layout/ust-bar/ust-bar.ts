@@ -54,6 +54,7 @@ export class UstBar {
         icon: 'pi pi-comments',
         items: kategoriler.length ? kategoriler : [{ label: 'Kategori yok', disabled: true }],
       },
+      { label: 'Üyeler', icon: 'pi pi-users', routerLink: '/uyeler' },
     ];
   }
 }

@@ -38,6 +38,9 @@ public class DilFiltresi {
     // ilk parçayı döndürür; değilse null. Sadece kelimenin İÇİNDE geçmek yetmez, böylece yasaklı bir
     // kelimeyi içinde barındıran masum kelimeler (örn. "götürmek") yakalanmaz.
     private String yasakliParca(String kelime) {
+        for (String y : yasakli) {
+            if (kelime.startsWith(y)) return y;
+        }
         int n = kelime.length();
         // onceki[i] >= 0: kelimenin ilk i harfi yasaklı parçalara bölünebiliyor, son parça onceki[i]'de başlıyor
         int[] onceki = new int[n + 1];

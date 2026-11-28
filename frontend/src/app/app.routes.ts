@@ -26,5 +26,10 @@ export const routes: Routes = [
     title: 'Profil - Donanım Üssü',
     loadComponent: () => import('./pages/profil/profil').then((m) => m.Profil),
   },
+  {
+    path: 'uyeler',
+    title: 'Üyeler - Donanım Üssü',
+    loadComponent: () => import('./pages/uyeler/uyeler').then((m) => m.Uyeler),
+  },
   { path: '**', redirectTo: '' },
 ];

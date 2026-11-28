@@ -21,10 +21,11 @@ public class DegerlendirmeController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<Degerlendirme> getir(@RequestParam(required = false) Long konuId,
+    clic List<Degerlendirme> getir(@RequestParam(required = false) Long konuId,
                                     @RequestParam(required = false) Long kullaniciId) {
-        return kullaniciId != null ? service.kullaniciIcin(kullaniciId) : service.konuIcin(konuId);
+        if (kullaniciId != null) return service.kullaniciIcin(kullaniciId);
+        if (konuId != null) return service.konuIcin(konuId);
+        return service.tumu();
     }
 
     @PostMapping

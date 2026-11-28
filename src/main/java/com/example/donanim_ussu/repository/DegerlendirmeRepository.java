@@ -10,6 +10,11 @@ import java.util.Optional;
 
 public interface DegerlendirmeRepository extends JpaRepository<Degerlendirme, Long> {
 
+    @Override
+    @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori",
+            "yorum", "yorum.kullanici", "yorum.konu", "yorum.konu.kullanici", "yorum.konu.kategori"})
+    List<Degerlendirme> findAll();
+
     Optional<Degerlendirme> findByKullaniciIdAndKonuId(Long kullaniciId, Long konuId);
 
     Optional<Degerlendirme> findByKullaniciIdAndYorumId(Long kullaniciId, Long yorumId);
