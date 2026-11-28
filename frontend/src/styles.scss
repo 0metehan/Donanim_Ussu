@@ -1,6 +1,5 @@
 @import 'primeicons/primeicons.css';
 
-// Sayfa zemini PrimeNG temasının renklerini kullansın (karanlık modda da)
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
@@ -11,8 +10,6 @@ body {
   background: var(--p-surface-950);
 }
 
-// Bağlantılar tarayıcının mavi-altı çizili hali yerine yazı rengiyle görünsün,
-// üzerine gelince temanın yeşil rengini alsın
 a {
   color: inherit;
   text-decoration: none;
@@ -22,15 +19,12 @@ a:hover {
   color: var(--p-primary-color);
 }
 
-// Üst bar sayfa içeriğinin üstünde kalsın: yoksa "Forumlar" açılır menüsü,
-// konu tablosunun başlığının (z-index: 2) ve sekme çizgisinin arkasına düşüyor.
 app-ust-bar {
   display: block;
   position: relative;
   z-index: 100;
 }
 
-// Giriş / kayıt formlarının düzeni: solda etiketler, sağda alanlar; dar ekranda alt alta
 .form-izgara {
   display: grid;
   grid-template-columns: 12rem minmax(0, 1fr);

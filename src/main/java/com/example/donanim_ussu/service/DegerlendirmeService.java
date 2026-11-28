@@ -19,11 +19,14 @@ public class DegerlendirmeService {
         this.yetkiKontrol = yetkiKontrol;
     }
 
+    public List<Degerlendirme> kullaniciIcin(Long kullaniciId) {
+        return repository.kullanicininAldigiPuanlar(kullaniciId);
+    }
+
     public List<Degerlendirme> konuIcin(Long konuId) {
         return repository.konununTumPuanlari(konuId);
     }
 
-    // Ayni kisi tekrar puan verirse eski puani guncellenir
     public void puanla(Degerlendirme gelen) {
         Kullanici ben = yetkiKontrol.girisYapan();
         Degerlendirme d = gelen.getKonu() != null

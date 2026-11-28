@@ -1,0 +1,51 @@
+<main style="padding: 1rem">
+  @if (kullanici(); as k) {
+    <p-card>
+      <ng-template #title><i class="pi pi-user"></i> {{ k.kullaniciAdi }}</ng-template>
+      <ng-template #subtitle>Üyelik: {{ k.olusturmaTarihi | date: 'dd.MM.yyyy' }}</ng-template>
+
+      <h3>Rank</h3>
+      <p-tag [value]="rank().ad" severity="success" />
+      <p>
+        <small>{{ toplamPuan() }} puan · {{ yorumlar().length }} yorum · {{ yildiz() }} yıldız</small>
+      </p>
+      @if (rank().sonraki) {
+        <p-progressbar [value]="rank().ilerleme" />
+        <small>Sonraki rank: {{ rank().sonraki }}</small>
+      }
+
+      <p-divider />
+
+      <h3>Biyografi</h3>
+      @if (benimProfilim()) {
+        <textarea
+          pTextarea
+          name="biyografi"
+          rows="4"
+          placeholder="Kendinden bahset..."
+          [(ngModel)]="biyografi"
+          [fluid]="true"
+        ></textarea>
+        <p-button label="Kaydet" icon="pi pi-check" size="small" (onClick)="biyografiKaydet()" />
+      } @else {
+        <p style="white-space: pre-line">{{ k.biyografi || 'Henüz biyografi yazılmamış.' }}</p>
+      }
+
+      <p-divider />
+
+      <h3>Yorumları ({{ yorumlar().length }})</h3>
+      @for (y of yorumlar(); track y.id; let ilk = $first) {
+        @if (!ilk) {
+          <p-divider />
+        }
+        <a [routerLink]="['/konu', y.konu?.id]">{{ y.konu?.baslik }}</a>
+        <div>
+          <small>{{ y.olusturmaTarihi | date: 'dd.MM.yyyy HH:mm' }}</small>
+        </div>
+        <p>{{ y.icerik }}</p>
+      } @empty {
+        <small>Henüz yorum yok.</small>
+      }
+    </p-card>
+  }
+</main>

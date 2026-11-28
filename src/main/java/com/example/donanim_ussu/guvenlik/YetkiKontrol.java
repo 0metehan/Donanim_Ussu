@@ -26,7 +26,6 @@ public class YetkiKontrol {
         }
         Kullanici kullanici = repository.findByKullaniciAdi(kimlik.getName())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici bulunamadi"));
-        // Banli kullanici hicbir islem yapamaz
         if (kullanici.isBanli()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Hesabiniz banlandi");
         }

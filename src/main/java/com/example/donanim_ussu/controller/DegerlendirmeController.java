@@ -22,8 +22,9 @@ public class DegerlendirmeController {
     }
 
     @GetMapping
-    public List<Degerlendirme> konuIcin(@RequestParam Long konuId) {
-        return service.konuIcin(konuId);
+    public List<Degerlendirme> getir(@RequestParam(required = false) Long konuId,
+                                    @RequestParam(required = false) Long kullaniciId) {
+        return kullaniciId != null ? service.kullaniciIcin(kullaniciId) : service.konuIcin(konuId);
     }
 
     @PostMapping

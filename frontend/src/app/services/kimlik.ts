@@ -9,7 +9,6 @@ export const ROL_ADLARI: Record<Rol, string> = {
   ADMIN: 'Admin',
 };
 
-// "Beni hatırla" seçiliyse token localStorage'da, değilse sessionStorage'da durur
 export function kayitliToken(): string | null {
   return localStorage.getItem('token') ?? sessionStorage.getItem('token');
 }
@@ -23,7 +22,6 @@ export class Kimlik {
   readonly kayitPenceresiAcik = signal(false);
 
   constructor() {
-    // Sayfa yenilenince kayıtlı token varsa kullanıcıyı geri getir
     if (kayitliToken()) {
       this.http.get<Kullanici>('/api/Kullanici/ben').subscribe({
         next: (k) => this.kullanici.set(k),
@@ -53,7 +51,6 @@ export class Kimlik {
     );
   }
 
-  // Backend parolayı "sifreHash" alanında alıp kendisi hashliyor
   kayitOl(kullaniciAdi: string, eposta: string, sifre: string, rol: Rol) {
     return this.http
       .post('/api/Kullanici', { kullaniciAdi, eposta, sifreHash: sifre, rol })

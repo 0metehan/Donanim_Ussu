@@ -28,7 +28,6 @@ export class GirisPenceresi {
       next: (k) => {
         this.kimlik.girisPenceresiAcik.set(false);
         this.sifre = '';
-        // Uyarı almış kullanıcıya hatırlat
         if (k.uyariSayisi) {
           this.bildirim.add({
             severity: 'warn',
@@ -37,7 +36,6 @@ export class GirisPenceresi {
           });
         }
       },
-      // 403: hesap banlı
       error: (err) =>
         this.bildirim.add({
           severity: 'error',

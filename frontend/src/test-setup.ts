@@ -1,4 +1,3 @@
-// jsdom test ortamında olmayan, PrimeNG'nin kullandığı tarayıcı API'leri için basit yer tutucular
 if (!window.matchMedia) {
   window.matchMedia = (query: string) =>
     ({

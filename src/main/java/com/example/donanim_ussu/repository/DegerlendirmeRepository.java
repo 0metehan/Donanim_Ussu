@@ -14,10 +14,15 @@ public interface DegerlendirmeRepository extends JpaRepository<Degerlendirme, Lo
 
     Optional<Degerlendirme> findByKullaniciIdAndYorumId(Long kullaniciId, Long yorumId);
 
-    // Konuya ve o konudaki yorumlara verilen tum puanlar
     @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori",
             "yorum", "yorum.kullanici", "yorum.konu", "yorum.konu.kullanici", "yorum.konu.kategori"})
     @Query("select d from Degerlendirme d left join d.konu k left join d.yorum y "
             + "where k.id = :konuId or y.konu.id = :konuId")
     List<Degerlendirme> konununTumPuanlari(Long konuId);
+
+    @EntityGraph(attributePaths = {"kullanici", "konu", "konu.kullanici", "konu.kategori",
+            "yorum", "yorum.kullanici", "yorum.konu", "yorum.konu.kullanici", "yorum.konu.kategori"})
+    @Query("select d from Degerlendirme d left join d.konu k left join d.yorum y "
+            + "where k.kullanici.id = :kullaniciId or y.kullanici.id = :kullaniciId")
+    List<Degerlendirme> kullanicininAldigiPuanlar(Long kullaniciId);
 }

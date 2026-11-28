@@ -33,12 +33,15 @@ public class RaporService {
         repository.save(rapor);
     }
 
+    @Transactional
     public void sil(Long id) {
         yetkiKontrol.yetkiliMi();
-        repository.deleteById(id);
+        Rapor rapor = repository.findById(id).orElseThrow();
+        if (rapor.getYorum() != null) rapor.getYorum().setGizli(false);
+        if (rapor.getKonu() != null) rapor.getKonu().setGizli(false);
+        repository.delete(rapor);
     }
 
-    // Raporlanan icerigin sahibine uyari verir, 3 uyarida banlar ve raporu kapatir
     @Transactional
     public Kullanici uyar(Long id) {
         yetkiKontrol.yetkiliMi();

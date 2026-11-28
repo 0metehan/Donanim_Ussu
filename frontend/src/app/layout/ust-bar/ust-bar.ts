@@ -22,7 +22,6 @@ export class UstBar {
   protected readonly menu = signal<MenuItem[]>(this.menuOlustur([]));
 
   constructor() {
-    // "Forumlar" menüsünün altını backend'deki kategorilerle doldur
     this.forum.kategoriler().subscribe({
       next: (kategoriler) =>
         this.menu.set(
@@ -33,7 +32,6 @@ export class UstBar {
     });
   }
 
-  // Ana sayfayı /?ara=kelime adresiyle açar; boşsa normal ana sayfaya döner
   protected ara(kelime: string): void {
     const temiz = kelime.trim();
     this.router.navigate(['/'], { queryParams: temiz ? { ara: temiz } : {} });

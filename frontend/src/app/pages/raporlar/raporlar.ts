@@ -28,7 +28,6 @@ export class Raporlar {
     this.forum.raporlar().subscribe((liste) => this.raporlar.set(liste));
   }
 
-  // Raporlanan içeriği yazan kişi
   protected sahip(r: Rapor) {
     return r.yorum ? r.yorum.kullanici : r.konu!.kullanici;
   }
@@ -55,7 +54,6 @@ export class Raporlar {
     this.forum.raporKapat(r.id).subscribe(() => this.getir());
   }
 
-  // Konuyu ya da yorumu siler; raporu da kendiliğinden silinir
   protected icerigiSil(r: Rapor): void {
     this.onay.confirm({
       header: 'İçeriği sil',

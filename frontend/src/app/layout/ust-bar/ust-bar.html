@@ -36,7 +36,13 @@
           routerLink="/raporlar"
         />
       }
-      <p-button [label]="kullanici.kullaniciAdi" icon="pi pi-user" [text]="true" severity="secondary" />
+      <p-button
+        [label]="kullanici.kullaniciAdi"
+        icon="pi pi-user"
+        [text]="true"
+        severity="secondary"
+        [routerLink]="['/profil', kullanici.id]"
+      />
       <p-button
         label="Çıkış"
         icon="pi pi-sign-out"

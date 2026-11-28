@@ -30,6 +30,11 @@ public class KullaniciController {
         return service.tumunuGetir();
     }
 
+    @PutMapping("/biyografi")
+    public Kullanici biyografi(@RequestBody Map<String, String> istek) {
+        return service.biyografiGuncelle(istek.get("biyografi"));
+    }
+
     @GetMapping("/ben")
     public Kullanici ben() {
         return service.ben();

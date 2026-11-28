@@ -16,7 +16,6 @@ import { Degerlendirme, Konu, Kullanici, Yorum } from '../../models/modeller';
 import { Forum } from '../../services/forum';
 import { Kimlik, ROL_ADLARI } from '../../services/kimlik';
 
-// Puan ya da rapor neye ait: konuya mı, yoruma mı
 type Hedef = { konuId?: number; yorumId?: number };
 
 @Component({
@@ -47,7 +46,6 @@ export class KonuSayfasi {
   protected readonly kimlik = inject(Kimlik);
   protected readonly rolAdlari = ROL_ADLARI;
 
-  // /konu/:id adresinden gelir
   readonly id = input<string>();
 
   protected readonly konu = signal<Konu | null>(null);
@@ -63,7 +61,6 @@ export class KonuSayfasi {
   protected readonly duzenlenenYorumId = signal<number | null>(null);
   protected duzenlenenMetin = '';
 
-  // Hangi konu/yorum raporlanıyor (null = rapor penceresi kapalı)
   protected readonly raporHedefi = signal<Hedef | null>(null);
   protected raporSebebi = '';
 
@@ -111,8 +108,6 @@ export class KonuSayfasi {
     this.forum.puanlar(konuId).subscribe((liste) => this.puanlar.set(liste));
   }
 
-  // ---- Konu ----
-
   protected konuyuDuzenle(k: Konu): void {
     this.baslik = k.baslik;
     this.icerik = k.icerik;
@@ -136,12 +131,11 @@ export class KonuSayfasi {
     });
   }
 
-  // ---- Yorumlar ----
-
   protected yorumEkle(k: Konu): void {
-    this.forum.yorumEkle(k.id, this.yeniYorum).subscribe(() => {
+    this.forum.yorumEkle(k.id, this.yeniYorum).subscribe((y) => {
       this.yeniYorum = '';
       this.yorumlariGetir(k.id);
+      if (y.gizli) this.bildirim.add({ severity: 'warn', summary: 'Yorumun incelemeye alındı.' });
     });
   }
 
@@ -168,9 +162,6 @@ export class KonuSayfasi {
     });
   }
 
-  // ---- Puan ----
-
-  // Ortalama puan, oy sayısı ve giriş yapanın verdiği puan
   protected puanBilgisi(hedef: Hedef) {
     const liste = this.puanlar().filter((p) =>
       hedef.yorumId ? p.yorum?.id === hedef.yorumId : p.konu?.id === hedef.konuId,
@@ -186,8 +177,6 @@ export class KonuSayfasi {
   protected puanVer(puan: number, hedef: Hedef): void {
     this.forum.puanla(puan, hedef).subscribe(() => this.puanlariGetir(this.konu()!.id));
   }
-
-  // ---- Rapor ----
 
   protected raporPenceresiniAc(hedef: Hedef): void {
     this.raporSebebi = '';

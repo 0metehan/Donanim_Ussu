@@ -10,7 +10,6 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    // withComponentInputBinding: adresteki :id gibi değerler bileşene input olarak gelir
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([tokenInterceptor])),
     ConfirmationService,
@@ -18,7 +17,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: Aura,
-        // <html> etiketine "karanlik" sınıfı eklenince karanlık tema açılır
         options: { darkModeSelector: '.karanlik' },
       },
     }),

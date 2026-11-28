@@ -27,7 +27,6 @@ public class KullaniciService {
         this.yetkiKontrol = yetkiKontrol;
     }
 
-    // Kullanici adi ve sifre dogruysa çerez dondurur
     public String giris(String kullaniciAdi, String sifre) {
         Kullanici kullanici = repository.findByKullaniciAdi(kullaniciAdi)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Kullanici adi veya sifre hatali"));
@@ -42,6 +41,12 @@ public class KullaniciService {
 
     public List<Kullanici> tumunuGetir() {
         return repository.findAll();
+    }
+
+    public Kullanici biyografiGuncelle(String biyografi) {
+        Kullanici ben = yetkiKontrol.girisYapan();
+        ben.setBiyografi(biyografi);
+        return repository.save(ben);
     }
 
     public Kullanici ben() {
@@ -61,7 +66,6 @@ public class KullaniciService {
     public Kullanici guncelle(Long id, Kullanici yeni) {
         Kullanici kullanici = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kullanici bulunamadi"));
-        // Kullanici sadece kendi hesabini guncelleyebilir (moderator/admin herkesi)
         yetkiKontrol.sahibiVeyaYetkili(kullanici);
         kullanici.setKullaniciAdi(yeni.getKullaniciAdi());
         kullanici.setEposta(yeni.getEposta());
@@ -73,7 +77,6 @@ public class KullaniciService {
     public void sil(Long id) {
         Kullanici kullanici = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kullanici bulunamadi"));
-        // Kullanici sadece kendi hesabini silebilir (moderator/admin herkesi)
         yetkiKontrol.sahibiVeyaYetkili(kullanici);
         repository.delete(kullanici);
     }

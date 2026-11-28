@@ -1,7 +1,9 @@
 package com.example.donanim_ussu.service;
 
+import com.example.donanim_ussu.entity.Rapor;
 import com.example.donanim_ussu.entity.Yorum;
 import com.example.donanim_ussu.guvenlik.YetkiKontrol;
+import com.example.donanim_ussu.repository.RaporRepository;
 import com.example.donanim_ussu.repository.YorumRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,18 +16,28 @@ import java.util.Optional;
 public class YorumService {
 
     private final YorumRepository repository;
+    private final RaporRepository raporRepository;
     private final YetkiKontrol yetkiKontrol;
+    private final DilFiltresi dilFiltresi;
 
-    public YorumService(YorumRepository repository, YetkiKontrol yetkiKontrol) {
+    public YorumService(YorumRepository repository, RaporRepository raporRepository,
+                        YetkiKontrol yetkiKontrol, DilFiltresi dilFiltresi) {
         this.repository = repository;
+        this.raporRepository = raporRepository;
         this.yetkiKontrol = yetkiKontrol;
+        this.dilFiltresi = dilFiltresi;
     }
 
-    public List<Yorum> tumunuGetir(Long konuId) {
-        if (konuId != null) {
-            return repository.findByKonuIdOrderByOlusturmaTarihiAsc(konuId);
+    public List<Yorum> tumunuGetir(Long konuId, Long kullaniciId) {
+        List<Yorum> liste;
+        if (kullaniciId != null) {
+            liste = repository.findByKullaniciIdOrderByOlusturmaTarihiDesc(kullaniciId);
+        } else if (konuId != null) {
+            liste = repository.findByKonuIdOrderByOlusturmaTarihiAsc(konuId);
+        } else {
+            liste = repository.findAll();
         }
-        return repository.findAll();
+        return liste.stream().filter(y -> !y.isGizli()).toList();
     }
 
     public Optional <Yorum> getir(Long id) {
@@ -34,22 +46,34 @@ public class YorumService {
 
     public Yorum ekle(Yorum yorum) {
         yorum.setId(null);
-        // Yorumun sahibi her zaman giris yapan kullanicidir
         yorum.setKullanici(yetkiKontrol.girisYapan());
-        return repository.save(yorum);
+        return denetle(repository.save(yorum));
     }
 
     public void guncelle(Long id, Yorum yeni) {
         Yorum yorum = bul(id);
         yetkiKontrol.sahibiVeyaYetkili(yorum.getKullanici());
         yorum.setIcerik(yeni.getIcerik());
-        repository.save(yorum);
+        denetle(repository.save(yorum));
     }
 
     public void sil(Long id) {
         Yorum yorum = bul(id);
         yetkiKontrol.sahibiVeyaYetkili(yorum.getKullanici());
         repository.delete(yorum);
+    }
+
+    private Yorum denetle(Yorum yorum) {
+        if (dilFiltresi.uygunsuzMu(yorum.getIcerik())) {
+            yorum.setGizli(true);
+            repository.save(yorum);
+            Rapor rapor = new Rapor();
+            rapor.setYorum(yorum);
+            rapor.setKullanici(yorum.getKullanici());
+            rapor.setSebep("Otomatik: uygunsuz kelime");
+            raporRepository.save(rapor);
+        }
+        return yorum;
     }
 
     private Yorum bul(Long id) {

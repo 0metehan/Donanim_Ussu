@@ -20,8 +20,6 @@ public interface KonuRepository extends JpaRepository<Konu, Long> {
     @EntityGraph(attributePaths = {"kullanici", "kategori"})
     List<Konu> findByKategoriIdOrderByOlusturmaTarihiDesc(Long kategoriId);
 
-    // "IgnoreCase" yok: sütun zaten büyük/küçük harf duyarsız (_ci). IgnoreCase'in kullandığı
-    // UPPER() Türkçe "i/İ" harflerini bozup "işlemci" aramasında "İşlemci"yi bulamıyordu.
     @EntityGraph(attributePaths = {"kullanici", "kategori"})
     List<Konu> findByBaslikContainingOrderByOlusturmaTarihiDesc(String baslik);
 }

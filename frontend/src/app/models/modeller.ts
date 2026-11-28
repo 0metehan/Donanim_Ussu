@@ -13,6 +13,8 @@ export interface Kullanici {
   rol?: Rol;
   uyariSayisi?: number;
   banli?: boolean;
+  biyografi?: string;
+  olusturmaTarihi?: string;
 }
 
 export interface Yorum {
@@ -20,6 +22,8 @@ export interface Yorum {
   icerik: string;
   kullanici: Kullanici;
   olusturmaTarihi: string;
+  konu?: Konu;
+  gizli?: boolean;
 }
 
 export interface Degerlendirme {
@@ -47,4 +51,5 @@ export interface Konu {
   kategori: Kategori;
   olusturmaTarihi: string;
   guncellemeTarihi?: string;
+  gizli?: boolean;
 }

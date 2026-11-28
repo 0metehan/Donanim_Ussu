@@ -42,6 +42,9 @@ public class Konu {
     @JoinColumn(name = "kategori_id", nullable = false)
     private Kategori kategori;
 
+    @Column(name = "gizli", nullable = false, columnDefinition = "bit default 0")
+    private boolean gizli;
+
     @Column(name = "olusturma_tarihi", nullable = false, updatable = false)
     private LocalDateTime olusturmaTarihi;
 

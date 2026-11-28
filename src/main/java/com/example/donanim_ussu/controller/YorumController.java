@@ -26,8 +26,9 @@ public class YorumController {
     }
 
     @GetMapping
-    public List<Yorum> tumunuGetir(@RequestParam(required = false) Long konuId) {
-        return service.tumunuGetir(konuId);
+    public List<Yorum> tumunuGetir(@RequestParam(required = false) Long konuId,
+                                   @RequestParam(required = false) Long kullaniciId) {
+        return service.tumunuGetir(konuId, kullaniciId);
     }
 
     @GetMapping("/{id}")

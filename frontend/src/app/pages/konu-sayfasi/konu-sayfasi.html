@@ -3,7 +3,6 @@
     @if (konu(); as k) {
       <p-breadcrumb [model]="yol()" [home]="{ icon: 'pi pi-home', routerLink: '/' }" />
 
-      <!-- Konu başlığı -->
       <p-card>
         @if (konuDuzenleniyor()) {
           <input pInputText name="baslik" [(ngModel)]="baslik" [fluid]="true" maxlength="200" />
@@ -16,11 +15,10 @@
         }
       </p-card>
 
-      <!-- Konunun ilk mesajı -->
       <p-card>
         <div class="mesaj">
           <div>
-            <strong>{{ k.kullanici.kullaniciAdi }}</strong>
+            <a [routerLink]="['/profil', k.kullanici.id]"><strong>{{ k.kullanici.kullaniciAdi }}</strong></a>
             @if (k.kullanici.rol) {
               <div><p-tag [value]="rolAdlari[k.kullanici.rol]" severity="secondary" /></div>
             }
@@ -71,7 +69,6 @@
                 />
               }
 
-              <!-- Değerlendirme: giriş yapan kendi puanını verir, yapmayan ortalamayı görür -->
               @let kp = puanBilgisi({ konuId: k.id });
               <p-rating
                 [ngModel]="kimlik.kullanici() ? kp.benim : kp.ortalama"
@@ -84,12 +81,11 @@
         </div>
       </p-card>
 
-      <!-- Yorumlar -->
       @for (y of yorumlar(); track y.id; let i = $index) {
         <p-card>
           <div class="mesaj">
             <div>
-              <strong>{{ y.kullanici.kullaniciAdi }}</strong>
+              <a [routerLink]="['/profil', y.kullanici.id]"><strong>{{ y.kullanici.kullaniciAdi }}</strong></a>
               @if (y.kullanici.rol) {
                 <div><p-tag [value]="rolAdlari[y.kullanici.rol]" severity="secondary" /></div>
               }
@@ -159,7 +155,6 @@
         </p-card>
       }
 
-      <!-- Yorum yaz -->
       <p-card header="Yorum yaz">
         @if (kimlik.kullanici()) {
           <textarea
@@ -200,7 +195,6 @@
   </aside>
 </main>
 
-<!-- Rapor penceresi -->
 <p-dialog
   header="Raporla"
   [visible]="raporHedefi() !== null"

@@ -14,7 +14,6 @@ public class JwtUtil {
 
     private final SecretKey anahtar;
 
-    // Çerezler  1 saat gecerli
     private final long gecerlilikSuresi = 1000 * 60 * 60;
 
     public JwtUtil(@Value("${jwt.anahtar}") String anahtarMetni) {
@@ -30,7 +29,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Token gecerliyse icindeki kullanici adini dondurur, gecersiz/suresi dolmussa JwtException firlatir
     public String kullaniciAdiAl(String token) {
         return Jwts.parser()
                 .verifyWith(anahtar)

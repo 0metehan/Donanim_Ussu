@@ -24,19 +24,15 @@ export class AnaSayfa {
   private readonly kimlik = inject(Kimlik);
   private readonly bildirim = inject(MessageService);
 
-  // /kategori/:id adresinden gelir; ana sayfada boştur (tüm konular)
   readonly id = input<string>();
 
-  // /?ara=kelime adresinden gelir (üst bardaki arama kutusu)
   readonly ara = input<string>();
 
   private readonly kategoriler = toSignal(this.forum.kategoriler(), { initialValue: [] });
 
-  // Sekme başlığı: aramada "Arama: kelime", kategori sayfasında kategorinin adı, ana sayfada "Yeni Konular"
   protected readonly sekmeBasligi = computed(() => {
     const kategori = this.kategoriler().find((k) => k.id === Number(this.id()));
     const baslik = this.ara() ? `Arama: ${this.ara()}` : (kategori?.ad ?? 'Yeni Konular');
-    // 'tr-TR': "i" harfi "I" değil "İ" olsun diye
     return baslik.toLocaleUpperCase('tr-TR');
   });
 
@@ -45,11 +41,9 @@ export class AnaSayfa {
   protected readonly konular = signal<Konu[]>([]);
   protected readonly yukleniyor = signal(false);
 
-  // Sağdaki "En Son İçerikler" kutusu: arama ve kategoriden bağımsız, tüm sitenin en yeni 5 konusu
   protected readonly sonKonular = signal<Konu[]>([]);
 
   constructor() {
-    // id ya da arama değişince konular yeniden gelir
     effect(() => this.konulariGetir());
     this.sonKonulariGetir();
   }
@@ -60,7 +54,6 @@ export class AnaSayfa {
     });
   }
 
-  // Giriş yapılmışsa konu penceresini, yapılmamışsa giriş penceresini açar
   protected yeniKonuAc(): void {
     if (this.kimlik.kullanici()) {
       this.konuPenceresiAcik.set(true);
@@ -84,7 +77,6 @@ export class AnaSayfa {
     });
   }
 
-  // Konuları en yeniden en eskiye sıralar
   private yeniden(liste: Konu[]): Konu[] {
     return [...liste].sort((a, b) => b.olusturmaTarihi.localeCompare(a.olusturmaTarihi));
   }

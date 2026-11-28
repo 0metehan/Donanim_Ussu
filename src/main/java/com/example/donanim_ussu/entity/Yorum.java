@@ -41,6 +41,9 @@ public class Yorum {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Konu konu;
 
+    @Column(name = "gizli", nullable = false, columnDefinition = "bit default 0")
+    private boolean gizli;
+
     @Column(name = "olusturma_tarihi", nullable = false, updatable = false)
     private LocalDateTime olusturmaTarihi;
 
